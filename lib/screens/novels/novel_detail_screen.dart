@@ -130,7 +130,7 @@ class NovelDetailScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ReadNovel(id:"d"),
+                              builder: (context) => const ReadNovel(id:"d"),
                             ),
                           );
                         },

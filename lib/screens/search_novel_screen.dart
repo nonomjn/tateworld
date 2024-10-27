@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SearchNovelScreen extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
   const SearchNovelScreen({
-    super.key,
-    required this.navigatorKey,
+    super.key
   });
 
   @override

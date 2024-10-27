@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ProfileIntroduction extends StatelessWidget {
+  const ProfileIntroduction({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -16,12 +18,12 @@ class ProfileIntroduction extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           const Text(
             'Đây là thông tin giới thiệu cá nhân của người dùng...',
             style: TextStyle(fontSize: 16),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           const Text(
             'Truyện đã đăng',
             style: TextStyle(
@@ -31,7 +33,7 @@ class ProfileIntroduction extends StatelessWidget {
           ),
           // Danh sách truyện
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: MediaQuery.of(context).size.height * 0.18,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -39,8 +41,8 @@ class ProfileIntroduction extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Card(
                   color: Colors.grey[200],
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width * 2 / 3,
                     child: Row(
                       children: [
@@ -76,7 +78,7 @@ class ProfileIntroduction extends StatelessWidget {
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 const Row(
                                   children: [
                                     Icon(Icons.remove_red_eye, size: 12),
@@ -93,7 +95,7 @@ class ProfileIntroduction extends StatelessWidget {
                                     Text('12', style: TextStyle(fontSize: 12)),
                                   ],
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Text(
                                   'Mô tả truyện rất dài và có thể chứa nhiều thông tin... $index',
                                   style: TextStyle(

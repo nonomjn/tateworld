@@ -1,19 +1,23 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatelessWidget {
   final bool isVisible;
   final VoidCallback showFontSettings;
+  final VoidCallback showComment;
 
   const BottomNavBar({
-    Key? key,
+    super.key,
     required this.isVisible,
     required this.showFontSettings,
-  }) : super(key: key);
+    required this.showComment,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       bottom: isVisible ? 0 : -80,
       left: 0,
       right: 0,
@@ -25,6 +29,9 @@ class BottomNavBar extends StatelessWidget {
         onTap: (index) {
           if (index == 3) {
             showFontSettings();
+          }
+          if(index == 1){
+            showComment();
           }
         },
         items: const <BottomNavigationBarItem>[

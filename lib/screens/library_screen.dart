@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LibraryScreen extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
   const LibraryScreen({
-    super.key,
-    required this.navigatorKey,
+    super.key
   });
 
   @override

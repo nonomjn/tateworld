@@ -7,12 +7,12 @@ class NovelContent extends StatelessWidget {
   final String novelContent;
 
   const NovelContent({
-    Key? key,
+    super.key,
     required this.fontSize,
     required this.selectedFont,
     required this.currentTheme,
     required this.novelContent,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +20,12 @@ class NovelContent extends StatelessWidget {
 
     return Container(
       color: currentTheme.scaffoldBackgroundColor,
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       child: SingleChildScrollView(
         child: Column(
           children: [
             Text(
-              'Chapter 1: The Mysterious Journey',
+              'Chapter 1: The Beginning',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: fontSize + 6,
@@ -96,7 +96,7 @@ class NovelContent extends StatelessWidget {
                   const SizedBox(height: 16),
                 ],
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

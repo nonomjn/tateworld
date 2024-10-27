@@ -1,8 +1,16 @@
+import 'dart:convert';
+
+import 'package:ct484_project/screens/login/login.dart';
+import 'package:ct484_project/screens/read_novel/read_novel.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/library_screen.dart';
 import 'screens/profile/profile.dart';
 import 'screens/search_novel_screen.dart';
+import 'screens/write_novel/novelchapter_edit.dart';
+import 'screens/write_novel/write_novel.dart';
+import 'screens/profile/edit_profile.dart';
+import 'screens/write_novel/novel_edit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,10 +26,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-          primary: Colors.deepPurple,
-          secondary: Colors.deepPurple[200],
-          surface: Colors.deepPurple[50],
+          seedColor: Colors.black,
+          primary: Colors.black,
+          secondary: Colors.grey[700],
+          surface: Colors.white,
           error: Colors.red,
           onPrimary: Colors.white,
           onSecondary: Colors.black,
@@ -37,111 +45,76 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const BottomNavBarWithStacks(),
+      home: const EditNovelScreen() ,
     );
   }
 }
 
-class BottomNavBarWithStacks extends StatefulWidget {
-  const BottomNavBarWithStacks({super.key});
+
+class MainBottomNavigationBar extends StatefulWidget {
+  const MainBottomNavigationBar({super.key});
 
   @override
-  _BottomNavBarWithStacksState createState() => _BottomNavBarWithStacksState();
+  State<MainBottomNavigationBar> createState() =>
+      _MainBottomNavigationBarState();
 }
 
-class _BottomNavBarWithStacksState extends State<BottomNavBarWithStacks> {
-  final List<GlobalKey<NavigatorState>> _navigatorKeys = [
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
+class _MainBottomNavigationBarState
+    extends State<MainBottomNavigationBar> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
+    LibraryScreen(),
+    SearchNovelScreen(),
+    WriteNovelScreen(),
+    Profile(),
   ];
-
-  int _currentIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
-      _currentIndex = index;
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        // Kiểm tra xem navigator hiện tại có thể quay lại không
-        final isFirstRouteInCurrentTab =
-            !await _navigatorKeys[_currentIndex].currentState!.maybePop();
-
-        // Nếu ở route đầu tiên của tab hiện tại, thoát ứng dụng
-        if (isFirstRouteInCurrentTab) {
-          return true;
-        }
-
-        // Nếu không, chỉ quay lại stack trước trong navigator của tab hiện tại
-        return false;
-      },
-      child: SafeArea(
-        child: Scaffold(
-          body: Stack(
-            children: <Widget>[
-              _buildOffstageScreen(0),
-              _buildOffstageScreen(1),
-              _buildOffstageScreen(2),
-              _buildOffstageScreen(3),
-            ],
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            onTap: _onItemTapped,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-                backgroundColor: Colors.black,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.library_books),
-                label: 'Library',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Search',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-            ],
-          ),
-        ),
+    return Scaffold(
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
-    );
-  }
-
-  Widget _buildOffstageScreen(int index) {
-    return Offstage(
-      offstage: _currentIndex != index,
-      child: Navigator(
-        key: _navigatorKeys[index],
-        onGenerateRoute: (routeSettings) {
-          return MaterialPageRoute(
-            builder: (context) {
-              switch (index) {
-                case 0:
-                  return HomeScreen(navigatorKey: _navigatorKeys[index]);
-                case 1:
-                  return LibraryScreen(navigatorKey: _navigatorKeys[index]);
-                case 2:
-                  return SearchNovelScreen(navigatorKey: _navigatorKeys[index]);
-                case 3:
-                  return Profile(navigatorKey: _navigatorKeys[index]);
-                default:
-                  return HomeScreen(navigatorKey: _navigatorKeys[index]);
-              }
-            },
-          );
-        },
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Trang chủ',
+            backgroundColor: Colors.black,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Thư viện',
+            backgroundColor: Colors.black,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.library_books),
+            label: 'Tìm kiếm',
+            backgroundColor: Colors.black,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.create),
+            label: 'Viết truyện',
+            backgroundColor: Colors.black,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Tài khoản',
+            backgroundColor: Colors.black,
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
     );
   }

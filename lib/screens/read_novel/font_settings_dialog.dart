@@ -12,13 +12,13 @@ class FontSettingsDialog extends StatefulWidget {
   final ValueChanged<ThemeData> onThemeChanged;
 
   const FontSettingsDialog({
-    Key? key,
+    super.key,
     required this.selectedFont,
     required this.fontSize,
     required this.onFontChanged,
     required this.onFontSizeChanged,
     required this.onThemeChanged,
-  }) : super(key: key);
+  });
 
   @override
   _FontSettingsDialogState createState() => _FontSettingsDialogState();
