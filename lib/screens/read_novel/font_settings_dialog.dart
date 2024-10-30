@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../models/theme_manager.dart';
 import 'theme_picker.dart';
 import 'font_size_picker.dart';
 import 'font_picker.dart';

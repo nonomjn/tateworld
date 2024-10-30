@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -30,7 +28,7 @@ class BottomNavBar extends StatelessWidget {
           if (index == 3) {
             showFontSettings();
           }
-          if(index == 1){
+          if (index == 1) {
             showComment();
           }
         },

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../main.dart';
-import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -36,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           children: <Widget>[
             // Ảnh nền cuốn sách từ mạng
             Image.asset(
-              'assets/loginbackground.jpg', 
+              'assets/loginbackground.jpg',
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,
@@ -76,8 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 border: OutlineInputBorder(),
                                 labelText: 'Họ và tên',
                                 contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                    horizontal: 12.0),
+                                    vertical: 10.0, horizontal: 12.0),
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -96,19 +93,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 border: OutlineInputBorder(),
                                 labelText: 'Email',
                                 contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                    horizontal: 12.0),
+                                    vertical: 10.0, horizontal: 12.0),
                               ),
                             ),
                             const SizedBox(height: 16),
                             const TextField(
-                              obscureText: true, 
+                              obscureText: true,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Password',
                                 contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                    horizontal: 12.0), 
+                                    vertical: 10.0, horizontal: 12.0),
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -118,13 +113,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 border: OutlineInputBorder(),
                                 labelText: 'Xác nhận mật khẩu',
                                 contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                    horizontal: 12.0), 
+                                    vertical: 10.0, horizontal: 12.0),
                               ),
                             ),
                             const SizedBox(height: 16),
-
-                          
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -159,8 +151,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ],
                             ),
                             const SizedBox(height: 16),
-
-                        
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -170,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 const SizedBox(height: 8),
                                 Container(
-                                  height: 48, 
+                                  height: 48,
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Colors.grey),
                                     borderRadius: BorderRadius.circular(8),
@@ -181,8 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   child: DropdownButton<String>(
                                     value: _selectedGender,
                                     isExpanded: true,
-                                    underline:
-                                        const SizedBox(),
+                                    underline: const SizedBox(),
                                     items: <String>[
                                       'Nam',
                                       'Nữ',
@@ -204,7 +193,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ],
                             ),
                             const SizedBox(height: 16),
-
                             ElevatedButton(
                               onPressed: () {
                                 // Điều hướng đến màn hình chính sau khi đăng ký thành công
