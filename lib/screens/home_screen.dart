@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
     final novels = NovelsManager().getNovels();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Novel'),
+        title: const Text('Tate World'),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
               const SectionTitle(title: 'Đề xuất truyện hay'),
               const SizedBox(height: 8),
               SizedBox(
-                height: MediaQuery.of(context).size.height / 3,
+                height: MediaQuery.of(context).size.height / 2.6,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: novels.length,
@@ -42,11 +42,11 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               const SectionTitle(title: 'Truyện đã hoàn thành'),
               const SizedBox(height: 8),
               SizedBox(
-                height: MediaQuery.of(context).size.height / 3,
+                height: MediaQuery.of(context).size.height / 2.6,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: novels.length,
@@ -55,11 +55,11 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               const SectionTitle(title: 'Truyện đang theo dõi'),
               const SizedBox(height: 8),
               SizedBox(
-                height: MediaQuery.of(context).size.height / 3,
+                height: MediaQuery.of(context).size.height / 2.6,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: novels.length,

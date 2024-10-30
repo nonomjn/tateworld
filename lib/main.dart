@@ -38,6 +38,7 @@ class _BottomNavBarWithStacksState extends State<BottomNavBarWithStacks> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
   ];
 
   int _currentIndex = 0;
@@ -72,6 +73,7 @@ class _BottomNavBarWithStacksState extends State<BottomNavBarWithStacks> {
               _buildOffstageScreen(1),
               _buildOffstageScreen(2),
               _buildOffstageScreen(3),
+              _buildOffstageScreen(4),
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -80,20 +82,28 @@ class _BottomNavBarWithStacksState extends State<BottomNavBarWithStacks> {
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                label: 'Home',
+                label: 'Trang chủ',
                 backgroundColor: Colors.black,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.library_books),
-                label: 'Library',
+                label: 'Thư viện',
+                backgroundColor: Colors.black,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
-                label: 'Search',
+                label: 'Tìm kiếm',
+                backgroundColor: Colors.black,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.create),
+                label: 'Viết truyện',
+                backgroundColor: Colors.black,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: 'Profile',
+                label: 'Trang cá nhân',
+                backgroundColor: Colors.black,
               ),
             ],
           ),
@@ -118,6 +128,8 @@ class _BottomNavBarWithStacksState extends State<BottomNavBarWithStacks> {
                 case 2:
                   return SearchNovelScreen(navigatorKey: _navigatorKeys[index]);
                 case 3:
+                  return ProfileScreen(navigatorKey: _navigatorKeys[index]);
+                case 4:
                   return ProfileScreen(navigatorKey: _navigatorKeys[index]);
                 default:
                   return HomeScreen(navigatorKey: _navigatorKeys[index]);
