@@ -1,4 +1,4 @@
-import '../../models/novel.dart';
+import '../models/novel.dart';
 
 class NovelsManager {
   final List<Novel> novels = [
