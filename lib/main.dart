@@ -146,6 +146,8 @@ class _BottomNavBarWithStacksState extends State<BottomNavBarWithStacks> {
                   return SearchNovelScreen(navigatorKey: _navigatorKeys[index]);
                 case 3:
                   return ProfileSrceen(navigatorKey: _navigatorKeys[index]);
+                case 4:
+                  return ProfileSrceen(navigatorKey: _navigatorKeys[index]);
                 default:
                   return HomeScreen(navigatorKey: _navigatorKeys[index]);
               }
