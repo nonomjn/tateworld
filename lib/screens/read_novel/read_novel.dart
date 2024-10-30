@@ -17,7 +17,6 @@ class ReadNovel extends StatefulWidget {
 
 class _ReadNovelState extends State<ReadNovel> {
   bool _isVisible = true;
-  final Duration _duration = const Duration(milliseconds: 500);
 
   double _fontSize = 16; // Default size for body text
   String _selectedFont = 'Serif'; // Default font
@@ -68,11 +67,13 @@ Exhausted, she limped toward the pedestal and carefully picked up the glowing ar
       },
     );
   }
+
   void _showCommentDialog() {
-    showModalBottomSheet(context: context,
-     builder: (BuildContext context) {
-       return CommentChapter();
-     });
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return CommentChapter();
+        });
   }
 
   @override
@@ -98,7 +99,7 @@ Exhausted, she limped toward the pedestal and carefully picked up the glowing ar
             BottomNavBar(
               isVisible: _isVisible,
               showFontSettings: _showFontSettings,
-              showComment:_showCommentDialog,
+              showComment: _showCommentDialog,
             ),
           ],
         ),
