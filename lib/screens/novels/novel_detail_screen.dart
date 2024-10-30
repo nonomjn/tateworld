@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/novel.dart';
 import 'novel_description.dart';
 import '../util/helper.dart';
+import '../read_novel/read_novel.dart';
 
 class NovelDetailScreen extends StatelessWidget {
   final Novel novel;
@@ -159,7 +160,14 @@ class NovelDetailScreen extends StatelessWidget {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReadNovel(id: "d"),
+                            ),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 24, vertical: 12),

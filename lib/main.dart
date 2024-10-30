@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/library_screen.dart';
-import 'screens/profile_screen.dart';
+import 'screens/profile/profile_screen.dart';
 import 'screens/search_novel_screen.dart';
 
 void main() {
@@ -17,6 +17,23 @@ class MyApp extends StatelessWidget {
       title: 'Novel Reader',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+          primary: Colors.deepPurple,
+          secondary: Colors.deepPurple[200],
+          surface: Colors.deepPurple[50],
+          error: Colors.red,
+          onPrimary: Colors.white,
+          onSecondary: Colors.black,
+        ),
+        textTheme: const TextTheme(
+          titleSmall: TextStyle(fontSize: 16),
+          titleLarge: TextStyle(fontSize: 22),
+          titleMedium: TextStyle(fontSize: 18),
+          bodyLarge: TextStyle(fontSize: 16),
+          bodyMedium: TextStyle(fontSize: 14),
+          bodySmall: TextStyle(fontSize: 12),
+        ),
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
@@ -128,9 +145,7 @@ class _BottomNavBarWithStacksState extends State<BottomNavBarWithStacks> {
                 case 2:
                   return SearchNovelScreen(navigatorKey: _navigatorKeys[index]);
                 case 3:
-                  return ProfileScreen(navigatorKey: _navigatorKeys[index]);
-                case 4:
-                  return ProfileScreen(navigatorKey: _navigatorKeys[index]);
+                  return ProfileSrceen(navigatorKey: _navigatorKeys[index]);
                 default:
                   return HomeScreen(navigatorKey: _navigatorKeys[index]);
               }
