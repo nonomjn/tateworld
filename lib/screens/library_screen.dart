@@ -19,13 +19,13 @@ class LibraryScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.help),
               onPressed: () {
-                navigatorKey.currentState!.pushNamed('/help');
+                // navigatorKey.currentState!.pushNamed('/help');
               },
             ),
             IconButton(
               icon: const Icon(Icons.more_vert),
               onPressed: () {
-                navigatorKey.currentState!.pushNamed('/more');
+                // navigatorKey.currentState!.pushNamed('/more');
               },
             ),
           ],

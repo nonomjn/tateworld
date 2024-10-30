@@ -20,6 +20,10 @@ class AppBarWidget extends StatelessWidget {
       left: 0,
       right: 0,
       child: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: toggleVisibility,
+        ),
         backgroundColor: const Color.fromARGB(255, 39, 33, 33),
         title: const Text('A fascinating journey', style: TextStyle(color: Colors.white)),
         actions: <Widget>[

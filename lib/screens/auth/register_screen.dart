@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import '../../main.dart';
-import '../../screens/login/login.dart';
+import 'login_screen.dart';
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  _RegisterState createState() => _RegisterState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _RegisterState extends State<Register> {
+class _RegisterScreenState extends State<RegisterScreen> {
   String _selectedGender = 'Nam'; // Giá trị mặc định là "Nam"
   DateTime _selectedDate = DateTime(2000, 1, 1); // Ngày mặc định
 
@@ -77,7 +77,7 @@ class _RegisterState extends State<Register> {
                                 labelText: 'Họ và tên',
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0,
-                                    horizontal: 12.0), // Giảm chiều cao
+                                    horizontal: 12.0),
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -97,34 +97,34 @@ class _RegisterState extends State<Register> {
                                 labelText: 'Email',
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0,
-                                    horizontal: 12.0), // Giảm chiều cao
+                                    horizontal: 12.0),
                               ),
                             ),
                             const SizedBox(height: 16),
                             const TextField(
-                              obscureText: true, // Ẩn mật khẩu
+                              obscureText: true, 
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Password',
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0,
-                                    horizontal: 12.0), // Giảm chiều cao
+                                    horizontal: 12.0), 
                               ),
                             ),
                             const SizedBox(height: 16),
                             const TextField(
-                              obscureText: true, // Ẩn mật khẩu
+                              obscureText: true,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Xác nhận mật khẩu',
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0,
-                                    horizontal: 12.0), // Giảm chiều cao
+                                    horizontal: 12.0), 
                               ),
                             ),
                             const SizedBox(height: 16),
 
-                            // Ngày sinh với border, căn chỉnh lại kích thước
+                          
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -134,7 +134,7 @@ class _RegisterState extends State<Register> {
                                 ),
                                 const SizedBox(height: 8),
                                 Container(
-                                  height: 48, // Chiều cao giống với TextField
+                                  height: 48,
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Colors.grey),
                                     borderRadius: BorderRadius.circular(8),
@@ -160,7 +160,7 @@ class _RegisterState extends State<Register> {
                             ),
                             const SizedBox(height: 16),
 
-                            // Giới tính với border, căn chỉnh lại kích thước
+                        
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -170,7 +170,7 @@ class _RegisterState extends State<Register> {
                                 ),
                                 const SizedBox(height: 8),
                                 Container(
-                                  height: 48, // Chiều cao giống với TextField
+                                  height: 48, 
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Colors.grey),
                                     borderRadius: BorderRadius.circular(8),
@@ -182,7 +182,7 @@ class _RegisterState extends State<Register> {
                                     value: _selectedGender,
                                     isExpanded: true,
                                     underline:
-                                        const SizedBox(), // Ẩn underline mặc định
+                                        const SizedBox(),
                                     items: <String>[
                                       'Nam',
                                       'Nữ',
