@@ -4,10 +4,7 @@ import 'screens/home_screen.dart';
 import 'screens/library_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'screens/search_novel_screen.dart';
-import 'screens/write_novel/novelchapter_edit.dart';
-import 'screens/write_novel/write_novel.dart';
-import 'screens/profile/edit_profile.dart';
-import 'screens/write_novel/novel_edit.dart';
+import 'screens/write_novel/writing_novel_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -79,7 +76,7 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
     HomeScreen(),
     SearchNovelScreen(),
     LibraryScreen(),
-    WriteNovelScreen(),
+    WritingNovelScreen(),
     ProfileSrceen(),
   ];
 

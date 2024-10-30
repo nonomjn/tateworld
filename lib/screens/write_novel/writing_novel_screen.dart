@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class WritingNovelScreen extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
-  const WritingNovelScreen({super.key, required this.navigatorKey});
+  const WritingNovelScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +111,7 @@ class NovelDraftListView extends StatelessWidget {
               ),
 
               PopupMenuButton(
+                color: Colors.white,
                 icon: const Icon(Icons.more_vert_sharp),
                 itemBuilder: (context) {
                   return [
@@ -213,6 +215,7 @@ class NovePostedListView extends StatelessWidget {
                 ),
               ),
               PopupMenuButton(
+                color: Colors.white,
                 icon: const Icon(Icons.more_vert_sharp),
                 itemBuilder: (context) {
                   return [
