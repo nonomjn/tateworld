@@ -5,18 +5,18 @@ import 'profile_info.dart';
 import 'profile_introduction.dart';
 import 'profile_followers.dart';
 
-class Profile extends StatefulWidget {
+class ProfileSrceen extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
-  const Profile({
+  const ProfileSrceen({
     super.key,
     required this.navigatorKey,
   });
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfileSrceen> createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> with TickerProviderStateMixin {
+class _ProfileState extends State<ProfileSrceen> with TickerProviderStateMixin {
   bool _isSettingsOpen = false;
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
