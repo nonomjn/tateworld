@@ -1,11 +1,9 @@
-import 'dart:convert';
 
-import 'package:ct484_project/screens/login/login.dart';
-import 'package:ct484_project/screens/read_novel/read_novel.dart';
+import 'package:ct484_project/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/library_screen.dart';
-import 'screens/profile/profile.dart';
+import 'screens/profile/profile_screen.dart';
 import 'screens/search_novel_screen.dart';
 import 'screens/write_novel/novelchapter_edit.dart';
 import 'screens/write_novel/write_novel.dart';
@@ -44,8 +42,24 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        primaryTextTheme: const TextTheme(
+          titleSmall: TextStyle(fontSize: 16, color: Colors.white),
+          titleLarge: TextStyle(fontSize: 22, color: Colors.white),
+          titleMedium: TextStyle(fontSize: 18, color: Colors.white),
+          bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
+          bodyMedium: TextStyle(fontSize: 14, color: Colors.white),
+          bodySmall: TextStyle(fontSize: 12, color: Colors.white),
+        ),
+        cardTheme: const CardTheme(
+          color: Colors.white,
+          elevation: 2,
+          margin: EdgeInsets.all(8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+          ),
+        ),
       ),
-      home: const EditNovelScreen() ,
+      home: const  LoginScreen(),
     );
   }
 }
@@ -66,10 +80,10 @@ class _MainBottomNavigationBarState
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    LibraryScreen(),
     SearchNovelScreen(),
+    LibraryScreen(),
     WriteNovelScreen(),
-    Profile(),
+    ProfileSrceen(),
   ];
 
   void _onItemTapped(int index) {
@@ -93,12 +107,12 @@ class _MainBottomNavigationBarState
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Thư viện',
+            label: 'Tìm kiếm',
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.library_books),
-            label: 'Tìm kiếm',
+            label: 'Thư viện',
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(

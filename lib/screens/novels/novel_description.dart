@@ -32,25 +32,22 @@ class _NovelDescriptionState extends State<NovelDescription> {
             widget.description,
             maxLines: _isExpanded ? null : 4,
             overflow: _isExpanded ? null : TextOverflow.ellipsis,
-            textAlign: TextAlign.justify, // Căn đều nội dung
+            textAlign: TextAlign.justify,
             style: const TextStyle(
               fontSize: 16,
             ),
           ),
         ),
-        const SizedBox(height: 8),
-        // Nút để mở rộng hoặc thu gọn, căn phải
         Align(
-          alignment: Alignment.centerRight, // Căn phải
+          alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: () {
               setState(() {
-                _isExpanded = !_isExpanded; // Chuyển đổi trạng thái mở rộng
+                _isExpanded = !_isExpanded;
               });
             },
             child: Row(
-              mainAxisSize:
-                  MainAxisSize.min, // Chỉ sử dụng kích thước cần thiết
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   _isExpanded ? 'Thu gọn' : 'Đọc thêm',
@@ -59,11 +56,11 @@ class _NovelDescriptionState extends State<NovelDescription> {
                     color: Colors.blue,
                   ),
                 ),
-                const SizedBox(width: 4), // Khoảng cách giữa chữ và icon
+                const SizedBox(width: 4),
                 Icon(
                   _isExpanded ? Icons.expand_less : Icons.expand_more,
-                  color: Colors.blue, // Màu icon
-                  size: 16, // Kích thước icon
+                  color: Colors.blue,
+                  size: 16,
                 ),
               ],
             ),

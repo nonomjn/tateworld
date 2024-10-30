@@ -3,85 +3,60 @@ import '../../models/novel.dart';
 class NovelsManager {
   final List<Novel> novels = [
     Novel(
-      title: 'Novel 1',
+      title: 'Lạc trong mơ',
       author: 'Author 1',
-      chapters: 10,
+      chapters: 2000,
+      views: 2342,
+      progress: 0.8,
+      rating: 4.5,
       description:
-          'Description of Novel 1 lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.',
+          'Lạc trong mơ là một câu chuyện xoay quanh những cung bậc cảm xúc và khát khao khám phá thế giới ẩn giấu trong chính tiềm thức con người. Câu chuyện kể về một nhân vật chính bị mắc kẹt giữa ranh giới của thực tại và những giấc mơ kỳ ảo, nơi mà ranh giới giữa thực và ảo trở nên mờ nhạt. Mỗi giấc mơ lại mở ra một hành trình mới, đầy bí ẩn và thách thức, đưa nhân vật chính dấn thân vào cuộc phiêu lưu vượt ra ngoài những giới hạn thông thường.',
       imageUrl:
-          'https://dep.com.vn/wp-content/uploads/2018/10/batch_mysoultokeeppbc-1.jpg',
+          'https://i.pinimg.com/564x/8e/20/e3/8e20e3e547ee81c75abf02f180d8a622.jpg',
     ),
     Novel(
-      title: 'Novel 2',
+      title: 'Quỷ bí chi chủ',
       author: 'Author 2',
-      chapters: 20,
+      chapters: 1001,
+      views: 3102,
+      progress: 0.6,
+      rating: 4.0,
       description: 'Description of Novel 2',
       imageUrl:
-          'https://dep.com.vn/wp-content/uploads/2018/10/batch_mysoultokeeppbc-1.jpg',
+          'https://i.pinimg.com/enabled_hi/564x/15/fc/89/15fc89d28e5835c97403e8e84a69ef0e.jpg',
     ),
     Novel(
-      title: 'Novel 3',
+      title: 'Shadow of the Wind',
       author: 'Author 3',
-      chapters: 30,
+      chapters: 800,
+      views: 5300,
+      progress: 0.9,
+      rating: 4.8,
       description: 'Description of Novel 3',
       imageUrl:
-          'https://dep.com.vn/wp-content/uploads/2018/10/batch_mysoultokeeppbc-1.jpg',
+          'https://i.pinimg.com/enabled_hi/564x/6a/6c/06/6a6c069505e5d71bf2aeeec9f2de1ca5.jpg',
     ),
     Novel(
-      title: 'Novel 4',
+      title: 'Lam',
       author: 'Author 4',
-      chapters: 40,
+      chapters: 10000,
+      views: 7802,
+      progress: 0.7,
+      rating: 4.2,
       description: 'Description of Novel 4',
       imageUrl:
-          'https://dep.com.vn/wp-content/uploads/2018/10/batch_mysoultokeeppbc-1.jpg',
+          'https://i.pinimg.com/564x/e8/43/64/e84364482284f39f79cc2b39d02890d9.jpg',
     ),
     Novel(
-      title: 'Novel 5',
+      title: 'Địa phủ',
       author: 'Author 5',
-      chapters: 50,
+      chapters: 5000,
+      views: 8493,
+      progress: 0.5,
+      rating: 4.7,
       description: 'Description of Novel 5',
       imageUrl:
-          'https://dep.com.vn/wp-content/uploads/2018/10/batch_mysoultokeeppbc-1.jpg',
-    ),
-    Novel(
-      title: 'Novel 6',
-      author: 'Author 6',
-      chapters: 60,
-      description: 'Description of Novel 6',
-      imageUrl:
-          'https://dep.com.vn/wp-content/uploads/2018/10/batch_mysoultokeeppbc-1.jpg',
-    ),
-    Novel(
-      title: 'Novel 7',
-      author: 'Author 7',
-      chapters: 70,
-      description: 'Description of Novel 7',
-      imageUrl:
-          'https://dep.com.vn/wp-content/uploads/2018/10/batch_mysoultokeeppbc-1.jpg',
-    ),
-    Novel(
-      title: 'Novel 8',
-      author: 'Author 8',
-      chapters: 80,
-      description: 'Description of Novel 8',
-      imageUrl:
-          'https://dep.com.vn/wp-content/uploads/2018/10/batch_mysoultokeeppbc-1.jpg',
-    ),
-    Novel(
-      title: 'Novel 9',
-      author: 'Author 9',
-      chapters: 90,
-      description: 'Description of Novel 9',
-      imageUrl:
-          'https://dep.com.vn/wp-content/uploads/2018/10/batch_mysoultokeeppbc-1.jpg',
-    ),
-    Novel(
-      title: 'Novel 10',
-      author: 'Author 10',
-      chapters: 100,
-      description: 'Description of Novel 10',
-      imageUrl:
-          'https://dep.com.vn/wp-content/uploads/2018/10/batch_mysoultokeeppbc-1.jpg',
+          'https://i.pinimg.com/564x/b5/f1/01/b5f1011cd54f9794e4e03c34e9c29748.jpg',
     ),
   ];
 

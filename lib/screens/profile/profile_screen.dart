@@ -1,21 +1,22 @@
 import 'dart:ui'; // Để sử dụng hiệu ứng làm mờ
+import 'package:ct484_project/screens/profile/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'profile_header.dart';
 import 'profile_info.dart';
 import 'profile_introduction.dart';
 import 'profile_followers.dart';
-import '../login/login.dart';
+import '../auth/login_screen.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({
+class ProfileSrceen extends StatefulWidget {
+  const ProfileSrceen({
     super.key,
   });
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfileSrceen> createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> with TickerProviderStateMixin {
+class _ProfileState extends State<ProfileSrceen> with TickerProviderStateMixin {
   bool _isSettingsOpen = false;
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
@@ -62,7 +63,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
               ? null // Ẩn nút Settings khi hộp thoại cài đặt mở
               : [
                   IconButton(
-                    icon: const Icon(Icons.settings),
+                    icon: const Icon(Icons.settings,color: Colors.white,),
                     onPressed: () {
                       _toggleSettings();
                     },
@@ -119,7 +120,13 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                   leading: const Icon(Icons.person),
                                   title: const Text('Đổi thông tin cá nhân'),
                                   onTap: () {
-                                    _toggleSettings();
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const EditProfileScreen(),
+                                      ),
+                                    );
                                   },
                                 ),
                                 ListTile(
@@ -136,7 +143,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const Login(),
+                                        builder: (context) => const LoginScreen(),
                                       ),
                                     );
                                   },
