@@ -4,7 +4,7 @@ import '../../models/theme_manager.dart';
 class ThemePicker extends StatelessWidget {
   final ValueChanged<ThemeData> onThemeChanged;
 
-  const ThemePicker({Key? key, required this.onThemeChanged}) : super(key: key);
+  const ThemePicker({super.key, required this.onThemeChanged});
 
   @override
   Widget build(BuildContext context) {

@@ -60,10 +60,10 @@ class ShowChapterListDialog {
 // Function to initialize and call ShowChapterListDialog
 void showChapterListDialog(BuildContext context) {
   final ChapterModel chapterModel = ChapterModel(
-    novelTitle: 'Cuộc hành trình kỳ bí',
-    novelImageUrl: 'https://via.placeholder.com/150',
+    novelTitle: 'A fascinating journey',
+    novelImageUrl: 'https://i.pinimg.com/enabled_hi/564x/6a/6c/06/6a6c069505e5d71bf2aeeec9f2de1ca5.jpg',
     currentChapter: 3,
-    chapters: List.generate(10, (index) => 'Chương ${index + 1}'),
+    chapters: List.generate(10, (index) => 'Chapter ${index + 1}'),
   );
 
   ShowChapterListDialog(

@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class NovelDescription extends StatefulWidget {
   final String description;
 
-  const NovelDescription({required this.description, Key? key})
-      : super(key: key);
+  const NovelDescription({required this.description, super.key});
 
   @override
   _NovelDescriptionState createState() => _NovelDescriptionState();
