@@ -3,6 +3,7 @@ import 'screens/home_screen.dart';
 import 'screens/library_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'screens/search_novel_screen.dart';
+import 'screens/writing/writing_novel_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -145,7 +146,8 @@ class _BottomNavBarWithStacksState extends State<BottomNavBarWithStacks> {
                 case 2:
                   return SearchNovelScreen(navigatorKey: _navigatorKeys[index]);
                 case 3:
-                  return ProfileSrceen(navigatorKey: _navigatorKeys[index]);
+                  return WritingNovelScreen(
+                      navigatorKey: _navigatorKeys[index]);
                 case 4:
                   return ProfileSrceen(navigatorKey: _navigatorKeys[index]);
                 default:
