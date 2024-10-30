@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ProfileInfo extends StatelessWidget {
+  const ProfileInfo({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -13,7 +15,7 @@ class ProfileInfo extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         const Text(
           'Tên người dùng',
           style: TextStyle(
@@ -22,7 +24,7 @@ class ProfileInfo extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         const Text(
           'username',
           style: TextStyle(
@@ -30,11 +32,15 @@ class ProfileInfo extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         ElevatedButton(
           onPressed: () {
             // Hành động khi nhấn nút theo dõi
           },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white.withOpacity(0.3),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          ),
           child: const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -45,10 +51,6 @@ class ProfileInfo extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
             ],
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white.withOpacity(0.3),
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           ),
         ),
         const SizedBox(height: 16),

@@ -4,17 +4,17 @@ import './novels/novel_card.dart';
 import './novels/section_title.dart';
 
 class HomeScreen extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
 
   const HomeScreen({
     super.key,
-    required this.navigatorKey,
   });
 
   @override
   Widget build(BuildContext context) {
     final novels = NovelsManager().getNovels();
-    return Scaffold(
+    return SafeArea(child:
+
+    Scaffold(
       appBar: AppBar(
         title: const Text('Tate World'),
         actions: [
@@ -72,6 +72,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

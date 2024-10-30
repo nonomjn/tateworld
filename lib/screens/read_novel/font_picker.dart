@@ -5,10 +5,10 @@ class FontPicker extends StatelessWidget {
   final ValueChanged<String> onFontChanged;
 
   const FontPicker({
-    Key? key,
+    super.key,
     required this.currentFont,
     required this.onFontChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

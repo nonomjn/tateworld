@@ -6,9 +6,9 @@ class ChapterList extends StatelessWidget {
 
   
   const ChapterList({
-    Key? key,
+    super.key,
     required this.chapterModel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class ChapterList extends StatelessWidget {
                                 .orange[100]
                             : Colors.transparent, 
                         child: ListTile(
-                          leading: Icon(Icons.book, color: Colors.orange),
+                          leading: const Icon(Icons.book, color: Colors.orange),
                           title: Text(
                             model.chapters[index],
                             style: TextStyle(

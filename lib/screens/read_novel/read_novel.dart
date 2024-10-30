@@ -5,10 +5,11 @@ import 'read_novel_bottomnavbar.dart';
 import 'font_settings_dialog.dart';
 import 'chapter_list_dialog.dart';
 import '../../models/theme_manager.dart';
+import 'comment_chapter.dart';
 
 class ReadNovel extends StatefulWidget {
   final String id;
-  const ReadNovel({Key? key,required this.id}) : super(key: key);
+  const ReadNovel({super.key, required this.id});
 
   @override
   State<ReadNovel> createState() => _ReadNovelState();
@@ -16,7 +17,7 @@ class ReadNovel extends StatefulWidget {
 
 class _ReadNovelState extends State<ReadNovel> {
   bool _isVisible = true;
-  Duration _duration = const Duration(milliseconds: 500);
+  final Duration _duration = const Duration(milliseconds: 500);
 
   double _fontSize = 16; // Default size for body text
   String _selectedFont = 'Serif'; // Default font
@@ -67,31 +68,40 @@ Exhausted, she limped toward the pedestal and carefully picked up the glowing ar
       },
     );
   }
+  void _showCommentDialog() {
+    showModalBottomSheet(context: context,
+     builder: (BuildContext context) {
+       return CommentChapter();
+     });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          GestureDetector(
-            onTap: _toggleVisibility,
-            child: NovelContent(
-              fontSize: _fontSize,
-              selectedFont: _selectedFont,
-              currentTheme: _currentTheme,
-              novelContent: novelContent,
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            GestureDetector(
+              onTap: _toggleVisibility,
+              child: NovelContent(
+                fontSize: _fontSize,
+                selectedFont: _selectedFont,
+                currentTheme: _currentTheme,
+                novelContent: novelContent,
+              ),
             ),
-          ),
-          AppBarWidget(
-            isVisible: _isVisible,
-            toggleVisibility: _toggleVisibility,
-            showChapterListDialog: () => showChapterListDialog(context),
-          ),
-          BottomNavBar(
-            isVisible: _isVisible,
-            showFontSettings: _showFontSettings,
-          ),
-        ],
+            AppBarWidget(
+              isVisible: _isVisible,
+              toggleVisibility: _toggleVisibility,
+              showChapterListDialog: () => showChapterListDialog(context),
+            ),
+            BottomNavBar(
+              isVisible: _isVisible,
+              showFontSettings: _showFontSettings,
+              showComment:_showCommentDialog,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SearchNovelScreen extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
-  const SearchNovelScreen({super.key, required this.navigatorKey});
+  const SearchNovelScreen({
+    super.key
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -248,10 +249,4 @@ class AuthorListView extends StatelessWidget {
       },
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: SearchNovelScreen(navigatorKey: GlobalKey<NavigatorState>()),
-  ));
 }

@@ -4,10 +4,8 @@ import 'library/save_tab.dart';
 import 'library/reading_tab.dart';
 
 class LibraryScreen extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
   const LibraryScreen({
-    super.key,
-    required this.navigatorKey,
+    super.key
   });
 
   @override
@@ -21,13 +19,13 @@ class LibraryScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.help),
               onPressed: () {
-                navigatorKey.currentState!.pushNamed('/help');
+                // navigatorKey.currentState!.pushNamed('/help');
               },
             ),
             IconButton(
               icon: const Icon(Icons.more_vert),
               onPressed: () {
-                navigatorKey.currentState!.pushNamed('/more');
+                // navigatorKey.currentState!.pushNamed('/more');
               },
             ),
           ],
