@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './novels/novels_manager.dart';
+import '../manager/novels_manager.dart';
 import './novels/novel_card.dart';
 import './novels/section_title.dart';
 

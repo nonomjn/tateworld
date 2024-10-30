@@ -6,7 +6,7 @@ import 'screens/profile/profile_screen.dart';
 import 'screens/search_novel_screen.dart';
 import 'screens/write_novel/writing_novel_screen.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
