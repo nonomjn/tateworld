@@ -1,4 +1,3 @@
-
 import 'package:ct484_project/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
@@ -59,11 +58,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const  LoginScreen(),
+      home: const LoginScreen(),
     );
   }
 }
-
 
 class MainBottomNavigationBar extends StatefulWidget {
   const MainBottomNavigationBar({super.key});
@@ -73,8 +71,7 @@ class MainBottomNavigationBar extends StatefulWidget {
       _MainBottomNavigationBarState();
 }
 
-class _MainBottomNavigationBarState
-    extends State<MainBottomNavigationBar> {
+class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
