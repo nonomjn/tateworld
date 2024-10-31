@@ -5,20 +5,18 @@ class User {
   final String email;
   final String name;
   final String username;
-  final String password;
   final String role;
   final String gender;
   final File? avatar;
   final File? cover;
-  final String url_avatar;
-  final String url_cover;
+  final String? url_avatar;
+  final String? url_cover;
 
   User({
     this.id,
     required this.email,
     required this.name,
     required this.username,
-    required this.password,
     required this.role,
     required this.gender,
     this.avatar,
@@ -45,7 +43,6 @@ class User {
       email: email ?? this.email,
       name: name ?? this.name,
       username: username ?? this.username,
-      password: password ?? this.password,
       role: role ?? this.role,
       gender: gender ?? this.gender,
       avatar: avatar ?? this.avatar,
@@ -56,11 +53,11 @@ class User {
   }
 
   bool hasAvatar() {
-    return avatar != null || url_avatar.isNotEmpty;
+    return avatar != null || (url_avatar?.isNotEmpty ?? false);
   }
 
   bool hasCover() {
-    return cover != null || url_cover.isNotEmpty;
+    return cover != null || (url_cover?.isNotEmpty ?? false);
   }
 
   Map<String, dynamic> toJson() {
@@ -69,23 +66,32 @@ class User {
       'email': email,
       'name': name,
       'username': username,
-      'password': password,
       'role': role,
       'gender': gender,
     };
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'],
-      email: json['email'],
-      name: json['name'],
-      username: json['username'],
-      password: json['password'],
-      role: json['role'],
-      gender: json['gender'],
-      url_avatar: json['url_avatar'] ?? '',
-      url_cover: json['url_cover'] ?? '',
-    );
+    try {
+      return User(
+        id: json['id'],
+        email: json['email'],
+        name: json['name'] ,
+        username: json['username'],
+        role: json['role'],
+        gender: json['gender'],
+        url_avatar: json['url_avatar'] ?? '',
+        url_cover: json['url_cover'] ?? '',
+      );
+    } catch (e) {
+      print( 'Error parsing User from JSON: $e');
+      return User(
+          id: '',
+          email: '',
+          name: '',
+          username: '',
+          role: '',
+          gender: '');
+    }
   }
 }
