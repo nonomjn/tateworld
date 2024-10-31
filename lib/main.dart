@@ -1,12 +1,15 @@
-import 'package:ct484_project/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'screens/auth/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/library_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'screens/search_novel_screen.dart';
 import 'screens/write_novel/writing_novel_screen.dart';
 
-void main() async {
+Future<void> main() async {
+  await dotenv.load();
   runApp(const MyApp());
 }
 
