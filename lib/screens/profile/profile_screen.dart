@@ -63,7 +63,10 @@ class _ProfileState extends State<ProfileSrceen> with TickerProviderStateMixin {
               ? null // Ẩn nút Settings khi hộp thoại cài đặt mở
               : [
                   IconButton(
-                    icon: const Icon(Icons.settings,color: Colors.white,),
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                    ),
                     onPressed: () {
                       _toggleSettings();
                     },
@@ -83,7 +86,7 @@ class _ProfileState extends State<ProfileSrceen> with TickerProviderStateMixin {
                 ],
               ),
             ),
-            // Hộp thoại cài đặt trượt từ bên phải chiếm 2/3 màn hình
+
             _isSettingsOpen
                 ? GestureDetector(
                     onTap: () {
@@ -120,7 +123,7 @@ class _ProfileState extends State<ProfileSrceen> with TickerProviderStateMixin {
                                   leading: const Icon(Icons.person),
                                   title: const Text('Đổi thông tin cá nhân'),
                                   onTap: () {
-                                    Navigator.pushReplacement(
+                                    Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
@@ -143,7 +146,8 @@ class _ProfileState extends State<ProfileSrceen> with TickerProviderStateMixin {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const LoginScreen(),
+                                        builder: (context) =>
+                                            const LoginScreen(),
                                       ),
                                     );
                                   },

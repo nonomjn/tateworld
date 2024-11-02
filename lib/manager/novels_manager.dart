@@ -10,8 +10,12 @@ class NovelsManager with ChangeNotifier {
 
   int get novelsCount => _novels.length;
 
-  Future<void> fetchNovels() async {
-    _novels = await _novelService.fetchNovels();
+  List<Novel> getNovels() {
+    return [..._novels];
+  }
+
+  Future<void> fetchNovelLates() async {
+    _novels = await _novelService.fetchNovelLatest();
     notifyListeners();
   }
 }

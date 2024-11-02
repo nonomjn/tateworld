@@ -10,12 +10,14 @@ class NovelService {
     return pb.files.getUrl(novelModel, imageCover).toString();
   }
 
-  Future<List<Novel>> fetchNovels() async {
+  Future<List<Novel>> fetchNovelLatest() async {
     final List<Novel> novels = [];
 
     try {
       final pb = await getPocketBaseInstance();
-      final novelModels = await pb.collection('novels').getFullList();
+      final novelModels = await pb.collection('novels').getFullList(
+            expand: 'chapters',
+          );
 
       for (final novelModel in novelModels) {
         novels.add(Novel.fromJson(
@@ -30,4 +32,19 @@ class NovelService {
       return novels;
     }
   }
+
+  // Future<Novel?> addNovel(Novel novel) async {
+  //   try {
+  //     final pb = await getPocketBaseInstance();
+  //     final novelModel = await pb.collection('novels').create(novel.toJson());
+  //     return Novel.fromJson(
+  //       novelModel.toJson()
+  //         ..addAll({
+  //           'url_image_cover': _getImageCover(pb, novelModel),
+  //         }),
+  //     );
+  //   } catch (error) {
+  //     return null;
+  //   }
+  // }
 }

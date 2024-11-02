@@ -1,25 +1,56 @@
+import 'dart:developer' as developer show log;
 import 'package:flutter/material.dart';
-import '../../main.dart';
+import 'package:provider/provider.dart';
+import 'show_error.dart';
 import 'register_screen.dart';
+import '../../manager/auth_manager.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  final Map<String, String> _authData = {
+    'username': '',
+    'password': '',
+  };
+  final _isSubmitting = ValueNotifier<bool>(false);
+  final _passwordController = TextEditingController();
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    _formKey.currentState!.save();
+    _isSubmitting.value = true;
+    try {
+      await context.read<AuthManager>().login(
+            _authData['username']!,
+            _authData['password']!,
+          );
+    } catch (error) {
+      developer.log('$error');
+      if (mounted) {
+        showErrorDialog(context,'Sai tên đăng nhập hoặc mật khẩu');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        // Thêm SafeArea ở đây
         child: Stack(
           children: <Widget>[
-            // Ảnh nền cuốn sách từ mạng
             Image.asset(
-              'assets/loginbackground.jpg', // URL ảnh nền
+              'assets/loginbackground.jpg',
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,
             ),
-            // Lớp phủ đen để làm dịu ảnh nền
             Container(
               width: double.infinity,
               height: double.infinity,
@@ -47,39 +78,26 @@ class LoginScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          const TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Username',
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.0,
-                                  horizontal: 12.0), // Giảm chiều cao
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          const TextField(
-                            obscureText: true, // Ẩn mật khẩu
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Password',
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.0,
-                                  horizontal: 12.0), // Giảm chiều cao
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const MainBottomNavigationBar()),
-                              );
-                            },
-                            child: const Text('Đăng nhập'),
-                          ),
+                          Form(
+                              key: _formKey,
+                              child: SingleChildScrollView(
+                                  child: Column(children: [
+                                const SizedBox(height: 16),
+                                _buildUsernameTextField(),
+                                const SizedBox(height: 16),
+                                _buildPasswordTextField(),
+                                const SizedBox(height: 16),
+                                ValueListenableBuilder<bool>(
+                                    valueListenable: _isSubmitting,
+                                    builder: (context, isSubmitting, child) {
+                                      return ElevatedButton(
+                                        onPressed: () {
+                                          _submit();
+                                        },
+                                        child: const Text('Đăng nhập'),
+                                      );
+                                    }),
+                              ]))),
                           const SizedBox(height: 16),
                           TextButton(
                             onPressed: () {
@@ -125,6 +143,44 @@ class LoginScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildUsernameTextField() {
+    return TextFormField(
+      decoration: const InputDecoration(
+        labelText: 'Tên đăng nhập',
+        border: OutlineInputBorder(),
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Tên đăng nhập không được để trống';
+        }
+        return null;
+      },
+      onSaved: (value) {
+        _authData['username'] = value!;
+      },
+    );
+  }
+
+  Widget _buildPasswordTextField() {
+    return TextFormField(
+      decoration: const InputDecoration(
+        labelText: 'Mật khẩu',
+        border: OutlineInputBorder(),
+      ),
+      obscureText: true,
+      controller: _passwordController,
+      validator: (value) {
+        if (value!.isEmpty || value.length < 5) {
+          return 'Mật khẩu quá ngắn';
+        }
+        return null;
+      },
+      onSaved: (value) {
+        _authData['password'] = value!;
+      },
     );
   }
 }
