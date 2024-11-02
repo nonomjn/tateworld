@@ -1,16 +1,19 @@
 import 'dart:io';
+import '../screens/util/helper.dart';
 
 class User {
-  final String? id;
-  final String email;
-  final String name;
-  final String username;
-  final String role;
-  final String gender;
-  final File? avatar;
-  final File? cover;
-  final String? url_avatar;
-  final String? url_cover;
+  late String? id;
+  late String email;
+  late String name;
+  late String username;
+  late String role;
+  late String gender;
+  late String? introduce;
+  late DateTime DoB;
+  late File? avatar;
+  late File? cover;
+  late String? url_avatar;
+  late String? url_cover;
 
   User({
     this.id,
@@ -19,6 +22,8 @@ class User {
     required this.username,
     required this.role,
     required this.gender,
+    required this.DoB,
+    this.introduce,
     this.avatar,
     this.cover,
     this.url_avatar = '',
@@ -30,9 +35,9 @@ class User {
     String? email,
     String? name,
     String? username,
-    String? password,
     String? role,
     String? gender,
+    String? introduce,
     File? avatar,
     File? cover,
     String? url_avatar,
@@ -45,7 +50,7 @@ class User {
       username: username ?? this.username,
       role: role ?? this.role,
       gender: gender ?? this.gender,
-      avatar: avatar ?? this.avatar,
+      DoB: DoB ?? this.DoB,
       cover: cover ?? this.cover,
       url_avatar: url_avatar ?? this.url_avatar,
       url_cover: url_cover ?? this.url_cover,
@@ -61,37 +66,35 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
+    return {  
       'email': email,
       'name': name,
       'username': username,
       'role': role,
       'gender': gender,
+      'introduce': introduce ?? '',
+      'DoB': formatDateTimeForPocketBase(DoB),
     };
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
     try {
       return User(
-        id: json['id'],
-        email: json['email'],
-        name: json['name'] ,
-        username: json['username'],
-        role: json['role'],
-        gender: json['gender'],
+        id: json['id'] ?? '',
+        email: json['email'] ?? '',
+        name: json['name'] ?? '',
+        username: json['username'] ?? '',
+        role: json['role'] ?? '',
+        gender: json['gender'] ?? '',
+        DoB: DateTime.parse(json['DoB']) ,
+        introduce: json['introduce'] ?? '',
         url_avatar: json['url_avatar'] ?? '',
         url_cover: json['url_cover'] ?? '',
       );
     } catch (e) {
-      print( 'Error parsing User from JSON: $e');
+      print('Error parsing User from JSON: $e');
       return User(
-          id: '',
-          email: '',
-          name: '',
-          username: '',
-          role: '',
-          gender: '');
+          id: '', email: '', name: '', username: '', role: '', gender: '', DoB: DateTime.now());
     }
   }
 }
