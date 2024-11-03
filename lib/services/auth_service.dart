@@ -27,14 +27,17 @@ class AuthService {
       });
     }
   }
-  Future<User> signup(String username, String password) async {
+  Future<User> signup(User user, String password) async {
     final pb = await getPocketBaseInstance();
     try {
+      print('user: ${user.toJson()}');
+      print('password: $password');
       final record = await pb.collection('users').create(body: {
-        'username': username,
+        ...user.toJson(),
         'password': password,
         'passwordConfirm': password,
       });
+      print('record: ${record.toJson()}');
       return User.fromJson(record.toJson());
     } catch (error) {
       if (error is ClientException) {
