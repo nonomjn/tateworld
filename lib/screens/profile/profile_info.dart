@@ -1,33 +1,37 @@
 import 'package:flutter/material.dart';
 
+import '../../models/user.dart';
+
 class ProfileInfo extends StatelessWidget {
-  const ProfileInfo({super.key});
+  final User user;
+  const ProfileInfo({super.key, required this.user});
+
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Center(
+        Center(
           child: CircleAvatar(
             radius: 60,
             backgroundImage: NetworkImage(
-              'https://randomuser.me/api/portraits/men/32.jpg', // Avatar
+              user.url_avatar ?? 'https://as-rays.pockethost.io/api/files/_pb_users_auth_/ttsp8nwp1dv3ljk/con_duong_ba_chu_cover_large_aKmK5tfyR1.jpg?token=',
             ),
           ),
-        ),
+        ), // In ra url_avatar,
         const SizedBox(height: 16),
-        const Text(
-          'Tên người dùng',
-          style: TextStyle(
+        Text(
+          user.name,
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
-          'username',
-          style: TextStyle(
+        Text(
+          user.username,
+          style: const TextStyle(
             fontSize: 18,
             color: Colors.white,
           ),

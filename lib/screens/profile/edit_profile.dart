@@ -1,6 +1,11 @@
 import 'dart:io';
+import 'package:ct484_project/manager/user_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../util.dart';
+import '../../manager/auth_manager.dart';
+import '../../models/user.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -14,13 +19,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
 
+  final UserManager _userManager = UserManager();
   File? _avatarImage;
   File? _coverImage;
+  User? user;
   final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
 
   DateTime? _selectedDateOfBirth;
-  String _selectedGender = 'Nam'; // Mặc định là Nam
+  String? _selectedGender;
   List<String> _genders = ['Nam', 'Nữ', 'Khác'];
+
+  @override
+  void initState() {
+    super.initState();
+    user = context.read<AuthManager>().user;
+    _selectedGender = user?.gender;
+  }
 
   void _selectAvatarImage() async {
     File? image = await _imagePickerHelper.pickImage(context);
@@ -66,7 +80,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: AppBar(
         title: Text(
           'Chỉnh Thông Tin Cá Nhân',
-          style: Theme.of(context).textTheme.titleSmall,),
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
