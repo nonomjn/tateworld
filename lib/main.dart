@@ -1,4 +1,5 @@
 import 'package:ct484_project/manager/auth_manager.dart';
+import 'package:ct484_project/manager/user_manager.dart';
 import 'package:ct484_project/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,62 +25,63 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => AuthManager(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserManager(),
+        ),
       ],
       child: Consumer<AuthManager>(builder: (ctx, auth, child) {
         return MaterialApp(
-          title: 'Novel Reader',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.black,
-              primary: Colors.black,
-              secondary: Colors.grey[700],
-              surface: Colors.white,
-              error: Colors.red,
-              onPrimary: Colors.white,
-              onSecondary: Colors.black,
-            ),
-            textTheme: const TextTheme(
-              titleSmall: TextStyle(fontSize: 16),
-              titleLarge: TextStyle(fontSize: 22),
-              titleMedium: TextStyle(fontSize: 18),
-              bodyLarge: TextStyle(fontSize: 16),
-              bodyMedium: TextStyle(fontSize: 14),
-              bodySmall: TextStyle(fontSize: 12),
-            ),
-            primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            primaryTextTheme: const TextTheme(
-              titleSmall: TextStyle(fontSize: 16, color: Colors.white),
-              titleLarge: TextStyle(fontSize: 22, color: Colors.white),
-              titleMedium: TextStyle(fontSize: 18, color: Colors.white),
-              bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
-              bodyMedium: TextStyle(fontSize: 14, color: Colors.white),
-              bodySmall: TextStyle(fontSize: 12, color: Colors.white),
-            ),
-            cardTheme: const CardTheme(
-              color: Colors.white,
-              elevation: 2,
-              margin: EdgeInsets.all(8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+            title: 'Novel Reader',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.black,
+                primary: Colors.black,
+                secondary: Colors.grey[700],
+                surface: Colors.white,
+                error: Colors.red,
+                onPrimary: Colors.white,
+                onSecondary: Colors.black,
+              ),
+              textTheme: const TextTheme(
+                titleSmall: TextStyle(fontSize: 16),
+                titleLarge: TextStyle(fontSize: 22),
+                titleMedium: TextStyle(fontSize: 18),
+                bodyLarge: TextStyle(fontSize: 16),
+                bodyMedium: TextStyle(fontSize: 14),
+                bodySmall: TextStyle(fontSize: 12),
+              ),
+              primarySwatch: Colors.blue,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              primaryTextTheme: const TextTheme(
+                titleSmall: TextStyle(fontSize: 16, color: Colors.white),
+                titleLarge: TextStyle(fontSize: 22, color: Colors.white),
+                titleMedium: TextStyle(fontSize: 18, color: Colors.white),
+                bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
+                bodyMedium: TextStyle(fontSize: 14, color: Colors.white),
+                bodySmall: TextStyle(fontSize: 12, color: Colors.white),
+              ),
+              cardTheme: const CardTheme(
+                color: Colors.white,
+                elevation: 2,
+                margin: EdgeInsets.all(8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
               ),
             ),
-          ),
-          home: auth.isAuth
-              ? const MainBottomNavigationBar()
-              : FutureBuilder(
-                  future: auth.tryAutoLogin(),
-                  builder: (ctx, authResultSnapshot) =>
-                      authResultSnapshot.connectionState ==
+            home: auth.isAuth
+                ? const MainBottomNavigationBar()
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (ctx, authResultSnapshot) {
+                      return authResultSnapshot.connectionState ==
                               ConnectionState.waiting
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : const LoginScreen(),
-                ),
-        );
+                          ? const CircularProgressIndicator()
+                          : const LoginScreen();
+                    },
+                  ));
       }),
     );
   }
@@ -100,7 +102,7 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
     SearchNovelScreen(),
     LibraryScreen(),
     WritingNovelScreen(),
-    ProfileSrceen(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

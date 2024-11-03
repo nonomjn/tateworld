@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/foundation.dart';
 
 import '../../models/user.dart';
@@ -42,5 +42,11 @@ class AuthManager with ChangeNotifier {
 
   Future<void> logout() async {
     return _authService.logout();
+  }
+
+  Future<void> updateProfile(User user) async {
+    final updatedUser = await _authService.updateProfile(user);
+    _loggedInUser = updatedUser;
+    notifyListeners();
   }
 }

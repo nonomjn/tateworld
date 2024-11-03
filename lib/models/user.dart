@@ -7,6 +7,7 @@ class User {
   final String username;
   final String role;
   final String gender;
+  final String? introduce;
   final File? avatar;
   final File? cover;
   final String? url_avatar;
@@ -19,6 +20,7 @@ class User {
     required this.username,
     required this.role,
     required this.gender,
+    this.introduce,
     this.avatar,
     this.cover,
     this.url_avatar = '',
@@ -30,7 +32,7 @@ class User {
     String? email,
     String? name,
     String? username,
-    String? password,
+    String? introduce,
     String? role,
     String? gender,
     File? avatar,
@@ -45,6 +47,7 @@ class User {
       username: username ?? this.username,
       role: role ?? this.role,
       gender: gender ?? this.gender,
+      introduce: introduce ?? this.introduce,
       avatar: avatar ?? this.avatar,
       cover: cover ?? this.cover,
       url_avatar: url_avatar ?? this.url_avatar,
@@ -66,6 +69,7 @@ class User {
       'email': email,
       'name': name,
       'username': username,
+      'introduce': introduce,
       'role': role,
       'gender': gender,
     };
@@ -73,16 +77,21 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     try {
-      return User(
+      User user = User(
         id: json['id'],
         email: json['email'],
         name: json['name'] ,
         username: json['username'],
         role: json['role'],
         gender: json['gender'],
+        introduce: json['introduce'] ?? '',
         url_avatar: json['url_avatar'] ?? '',
         url_cover: json['url_cover'] ?? '',
       );
+      String toStringurl_avatar = user.url_avatar.toString();
+      String toStringurl_cover = user.url_cover.toString();
+      print('url_avatar: $toStringurl_avatar');
+      return user;
     } catch (e) {
       print( 'Error parsing User from JSON: $e');
       return User(
