@@ -5,7 +5,7 @@ import '../models/user.dart';
 import './pocketbase_client.dart';
 
 class AuthService {
-    String _getAvatarImageUrl(PocketBase pb, RecordModel usermodel) {
+  String _getAvatarImageUrl(PocketBase pb, RecordModel usermodel) {
     final avatarImageName = usermodel.getStringValue('avatar');
     return pb.files.getUrl(usermodel, avatarImageName).toString();
   }
@@ -14,6 +14,7 @@ class AuthService {
     final coverImageName = usermodel.getStringValue('cover');
     return pb.files.getUrl(usermodel, coverImageName).toString();
   }
+
   void Function(User? user)? onAuthChange;
   AuthService({this.onAuthChange}) {
     if (onAuthChange != null) {
@@ -49,14 +50,13 @@ class AuthService {
   Future<User> login(String username, String password) async {
     final pb = await getPocketBaseInstance();
     try {
-      print('username: $username');
       final authRecord =
           await pb.collection('users').authWithPassword(username, password);
-        print('authRecord: $authRecord');
-      return User.fromJson(authRecord.record!.toJson()..addAll({
-        'url_avatar': _getAvatarImageUrl(pb, authRecord.record!),
-        'url_cover': _getCoverImageUrl(pb, authRecord.record!),
-      }));
+      return User.fromJson(authRecord.record!.toJson()
+        ..addAll({
+          'url_avatar': _getAvatarImageUrl(pb, authRecord.record!),
+          'url_cover': _getCoverImageUrl(pb, authRecord.record!),
+        }));
     } catch (error) {
       if (error is ClientException) {
         throw Exception(error.response['message']);
