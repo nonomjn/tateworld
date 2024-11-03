@@ -27,7 +27,6 @@ class _NovelCardState extends State<NovelCard> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.novel.id);
     return FutureBuilder<void>(
       future: _fetchChapters,
       builder: (context, snapshot) {

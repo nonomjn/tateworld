@@ -15,7 +15,24 @@ class NovelsManager with ChangeNotifier {
   }
 
   Future<void> fetchNovelLates() async {
-    _novels = await _novelService.fetchNovelLatest();
+    _novels = await _novelService.fetchNovel();
+    notifyListeners();
+  }
+
+  Future<void> fetchNovelByUser() async {
+    _novels = await _novelService.fetchNovel(filteredByUser: true);
+    notifyListeners();
+  }
+
+  Future<void> fetchDraftNovel() async {
+    _novels =
+        await _novelService.fetchNovel(filteredByUser: true, isDraft: true);
+    notifyListeners();
+  }
+
+  Future<void> fetchCompleteNovel() async {
+    _novels =
+        await _novelService.fetchNovel(filteredByUser: true, isComplete: true);
     notifyListeners();
   }
 }

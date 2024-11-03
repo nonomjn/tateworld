@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../models/chapter.dart';
 import '../../services/chapter_service.dart';
 
-class ChapterManager extends ChangeNotifier {
+class ChapterManager with ChangeNotifier {
   final ChapterService _chapterService = ChapterService();
 
   List<Chapter> _chapters = [];
@@ -17,8 +17,26 @@ class ChapterManager extends ChangeNotifier {
     return _chapters.length;
   }
 
+  int get totalChapterDrafts {
+    return _chapters.where((chapter) => chapter.status == 'draft').length;
+  }
+
+  int get totalChapterPublished {
+    return _chapters.where((chapter) => chapter.status == 'published').length;
+  }
+
   Future<void> fetchChapters(String novelId) async {
     _chapters = await _chapterService.fetchChapters(novelId);
+    notifyListeners();
+  }
+
+  Future<void> fetchDraftChapters(String novelId) async {
+    _chapters = await _chapterService.fetchChapters(novelId, isDraft: true);
+    notifyListeners();
+  }
+
+  Future<void> fetchPublishedChapters(String novelId) async {
+    _chapters = await _chapterService.fetchChapters(novelId, isPublished: true);
     notifyListeners();
   }
 

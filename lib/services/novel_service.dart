@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 import '../models/novel.dart';
@@ -10,12 +11,34 @@ class NovelService {
     return pb.files.getUrl(novelModel, imageCover).toString();
   }
 
-  Future<List<Novel>> fetchNovelLatest() async {
+  Future<List<Novel>> fetchNovel({
+    bool filteredByUser = false,
+    bool isDraft = false,
+    bool isComplete = false,
+  }) async {
     final List<Novel> novels = [];
 
     try {
       final pb = await getPocketBaseInstance();
+      final userId = pb.authStore.model!.id;
+      final List<String> filters = [];
+
+      if (filteredByUser) {
+        filters.add("author = '$userId'");
+      }
+
+      if (isDraft) {
+        filters.add('is_completed = false');
+      }
+
+      if (isComplete) {
+        filters.add('is_completed = true');
+      }
+
+      final filterQuery = filters.isNotEmpty ? filters.join(' && ') : null;
+
       final novelModels = await pb.collection('novels').getFullList(
+            filter: filterQuery,
             expand: 'chapters',
           );
 
@@ -27,6 +50,7 @@ class NovelService {
             }),
         ));
       }
+
       return novels;
     } catch (error) {
       return novels;

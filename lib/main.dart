@@ -76,19 +76,19 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          home: const MainBottomNavigationBar(),
-          // home: auth.isAuth
-          //     ? const MainBottomNavigationBar()
-          //     : FutureBuilder(
-          //         future: auth.tryAutoLogin(),
-          //         builder: (ctx, authResultSnapshot) =>
-          //             authResultSnapshot.connectionState ==
-          //                     ConnectionState.waiting
-          //                 ? const Center(
-          //                     child: CircularProgressIndicator(),
-          //                   )
-          //                 : const LoginScreen(),
-          //       ),
+          // home: const MainBottomNavigationBar(),
+          home: auth.isAuth
+              ? const MainBottomNavigationBar()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : const LoginScreen(),
+                ),
         );
       }),
     );

@@ -4,6 +4,7 @@ class Novel {
   final String? id;
   final String novelName;
   final String description;
+  final bool isCompleted;
   final File? imageCover;
   final String urlImageCover;
 
@@ -11,6 +12,7 @@ class Novel {
     this.id,
     required this.novelName,
     required this.description,
+    this.isCompleted = false,
     this.imageCover,
     this.urlImageCover = '',
   });
@@ -19,6 +21,7 @@ class Novel {
     String? id,
     String? novelName,
     String? description,
+    bool? isCompleted,
     File? imageCover,
     String? urlImageCover,
   }) {
@@ -26,6 +29,7 @@ class Novel {
       id: id ?? this.id,
       novelName: novelName ?? this.novelName,
       description: description ?? this.description,
+      isCompleted: isCompleted ?? this.isCompleted,
       imageCover: imageCover ?? this.imageCover,
       urlImageCover: urlImageCover ?? this.urlImageCover,
     );
@@ -39,6 +43,7 @@ class Novel {
     return {
       'novel_name': novelName,
       'description': description,
+      'is_completed': isCompleted,
     };
   }
 
@@ -47,6 +52,7 @@ class Novel {
       id: json['id'],
       novelName: json['novel_name'],
       description: json['description'],
+      isCompleted: json['is_completed'],
       urlImageCover: json['url_image_cover'],
     );
   }

@@ -5,13 +5,28 @@ import '../models/chapter.dart';
 import 'pocketbase_client.dart';
 
 class ChapterService {
-  Future<List<Chapter>> fetchChapters(String novelId) async {
+  Future<List<Chapter>> fetchChapters(String novelId,
+      {bool isDraft = false, bool isPublished = false}) async {
     final List<Chapter> chapters = [];
 
     try {
       final pb = await getPocketBaseInstance();
+
+      final List<String> filters = ['novel = "$novelId"'];
+
+      if (isDraft) {
+        filters.add('status = "draft"');
+      }
+
+      if (isPublished) {
+        filters.add('status = "published"');
+      }
+
+      final filterQuery = filters.join(' && ');
+      print(filterQuery);
+
       final chapterModels = await pb.collection('chapter').getFullList(
-            filter: 'novel = "$novelId"',
+            filter: filterQuery,
           );
 
       for (final chapterModel in chapterModels) {
