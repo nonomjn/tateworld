@@ -1,24 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../manager/novels_manager.dart';
 import '../novels/novel_detail_screen.dart';
 import '../../models/novel.dart';
+import '../../manager/reading_manager.dart';
 
-class ReadingTab extends StatelessWidget {
+class ReadingTab extends StatefulWidget {
   const ReadingTab({super.key});
 
   @override
+  State<ReadingTab> createState() => _ReadingTabState();
+}
+
+class _ReadingTabState extends State<ReadingTab> {
+  late Future<void> _fetchReadingNovel;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchReadingNovel = context.read<ReadingManager>().fetchReadingNovel();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final novels = NovelsManager().getNovels();
+    return FutureBuilder(
+      future: _fetchReadingNovel,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        List<Novel> novels = context
+            .watch<ReadingManager>()
+            .getReading()
+            .map((reading) => reading.novel!)
+            .toList();
+
+        if (novels.isEmpty) {
+          return const Center(
+            child: Text("Bạn chưa có truyện nào đang đọc!"),
+          );
+        }
+        return _buildReadingTab(novels: novels);
+      },
+    );
+  }
+
+  Widget _buildReadingTab({required List<Novel> novels}) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, // Số cột
-            childAspectRatio: 0.41, // Tỉ lệ chiều rộng so với chiều cao
-            crossAxisSpacing: 4.0, // Khoảng cách giữa các cột
-            mainAxisSpacing: 10, // Khoảng cách giữa các hàng
+            crossAxisCount: 3,
+            childAspectRatio: 0.41,
+            crossAxisSpacing: 4.0,
+            mainAxisSpacing: 10,
           ),
           itemCount: novels.length,
           itemBuilder: (context, index) {
@@ -68,7 +107,7 @@ class ReadingTab extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               novel.novelName,
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 14,
@@ -78,18 +117,18 @@ class ReadingTab extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
+                const Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.star,
                       color: Colors.orange,
                       size: 16,
                     ),
-                    const SizedBox(width: 4),
-                    // Text(
-                    //   '${novel.rating}',
-                    //   style: const TextStyle(fontSize: 12),
-                    // ),
+                    SizedBox(width: 4),
+                    Text(
+                      '4',
+                      style: TextStyle(fontSize: 12),
+                    ),
                   ],
                 ),
                 Row(
@@ -100,10 +139,10 @@ class ReadingTab extends StatelessWidget {
                       size: 16,
                     ),
                     const SizedBox(width: 4),
-                    // Text(
-                    //   '${novel.chapters}',
-                    //   style: const TextStyle(fontSize: 12),
-                    // ),
+                    Text(
+                      novel.totalChaptersPublished.toString(),
+                      style: const TextStyle(fontSize: 12),
+                    ),
                   ],
                 ),
               ],

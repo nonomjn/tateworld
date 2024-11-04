@@ -5,6 +5,7 @@ class Novel {
   final String novelName;
   final String description;
   final bool isCompleted;
+  final String author;
   final File? imageCover;
   final String urlImageCover;
   final int? totalChaptersPublished;
@@ -16,6 +17,7 @@ class Novel {
     required this.novelName,
     required this.description,
     this.isCompleted = false,
+    required this.author,
     this.imageCover,
     this.urlImageCover = '',
     this.totalChaptersPublished,
@@ -28,6 +30,7 @@ class Novel {
     String? novelName,
     String? description,
     bool? isCompleted,
+    String? author,
     File? imageCover,
     String? urlImageCover,
     int? totalChaptersPublished,
@@ -39,6 +42,7 @@ class Novel {
       novelName: novelName ?? this.novelName,
       description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
+      author: author ?? this.author,
       imageCover: imageCover ?? this.imageCover,
       urlImageCover: urlImageCover ?? this.urlImageCover,
       totalChaptersPublished:
@@ -57,6 +61,7 @@ class Novel {
       'novel_name': novelName,
       'description': description,
       'is_completed': isCompleted,
+      'author': author,
     };
   }
 
@@ -66,7 +71,8 @@ class Novel {
       novelName: json['novel_name'],
       description: json['description'],
       isCompleted: json['is_completed'],
-      urlImageCover: json['url_image_cover'],
+      author: json['author'],
+      urlImageCover: json['image_cover'],
       totalChaptersPublished: json['totalChaptersPublished'] ?? 0,
       totalChaptersDraft: json['totalChaptersDraft'] ?? 0,
       totalViews: json['totalViews'] ?? 0,

@@ -4,6 +4,7 @@ String formatDateTimeForPocketBase(DateTime dateTime) {
   final DateFormat formatter = DateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
   return formatter.format(dateTime.toUtc());
 }
+
 class Helper {
   static String formatNumber(int number) {
     if (number < 1000) {

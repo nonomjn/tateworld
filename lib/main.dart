@@ -14,6 +14,7 @@ import 'manager/auth_manager.dart';
 import 'manager/chapter_manager.dart';
 import 'manager/storage_manager.dart';
 import 'manager/user_manager.dart';
+import 'manager/reading_manager.dart';
 
 Future<void> main() async {
   await dotenv.load();
@@ -41,6 +42,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => StorageManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ReadingManager(),
         ),
       ],
       child: Consumer<AuthManager>(builder: (ctx, auth, child) {
