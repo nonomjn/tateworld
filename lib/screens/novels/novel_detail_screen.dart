@@ -50,8 +50,6 @@ class _NovelDetailScreenState extends State<NovelDetailScreen> {
             body: const Center(child: CircularProgressIndicator()),
           );
         } else {
-          final totalViews = context.watch<ChapterManager>().totalViews;
-          final totalChapters = context.watch<ChapterManager>().totalChapters;
           return Scaffold(
             extendBodyBehindAppBar: true,
             appBar: AppBar(
@@ -133,9 +131,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 4),
-                                // Placeholder for view count
                                 Text(
-                                  Helper.formatNumber(totalViews),
+                                  Helper.formatNumber(widget.novel.totalViews!),
                                   style: const TextStyle(
                                     fontSize: 16,
                                   ),
@@ -154,7 +151,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen> {
                                 const SizedBox(height: 4),
                                 // Placeholder for chapter count
                                 Text(
-                                  totalChapters.toString(),
+                                  widget.novel.totalChaptersPublished
+                                      .toString(),
                                   style: const TextStyle(
                                     fontSize: 16,
                                   ),
@@ -238,11 +236,15 @@ class _NovelDetailScreenState extends State<NovelDetailScreen> {
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      for (var i = 0; i < totalChapters; i++)
+                                      for (var i = 0;
+                                          i <
+                                              widget.novel
+                                                  .totalChaptersPublished!;
+                                          i++)
                                         ListTile(
                                           contentPadding: EdgeInsets.zero,
                                           title: Text(
-                                            'Chapter ${i + 1}: ${context.watch<ChapterManager>().chapters[i].title}',
+                                            'Chương ${i + 1}: ${context.watch<ChapterManager>().chapters[i].title}',
                                           ),
                                           trailing: const Icon(
                                               Icons.arrow_forward_ios),

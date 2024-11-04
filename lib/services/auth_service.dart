@@ -34,8 +34,6 @@ class AuthService {
   Future<User> signup(User user, String password) async {
     final pb = await getPocketBaseInstance();
     try {
-      print('user: ${user.toJson()}');
-      print('password: $password');
       final record = await pb.collection('users').create(body: {
         ...user.toJson(),
         'password': password,
@@ -43,7 +41,6 @@ class AuthService {
         'emailVisibility': 'true',
         'verified': 'true',
       });
-      print('record: ${record.toJson()}');
       return User.fromJson(record.toJson());
     } catch (error) {
       if (error is ClientException) {

@@ -3,9 +3,23 @@ import 'package:flutter/material.dart';
 import '../../manager/novels_manager.dart';
 import '../novels/novel_detail_screen.dart';
 import '../../models/novel.dart';
+import '../../manager/storage_manager.dart';
 
-class StoreTab extends StatelessWidget {
+class StoreTab extends StatefulWidget {
   const StoreTab({super.key});
+
+  @override
+  State<StoreTab> createState() => _StoreTabState();
+}
+
+class _StoreTabState extends State<StoreTab> {
+  late Future<void> _fetchStorage;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchStorage = StorageManager().fetchStorage();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +29,10 @@ class StoreTab extends StatelessWidget {
       child: SizedBox(
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, // Số cột
-            childAspectRatio: 0.4, // Tỉ lệ chiều rộng so với chiều cao
-            crossAxisSpacing: 4.0, // Khoảng cách giữa các cột
-            mainAxisSpacing: 10, // Khoảng cách giữa các hàng
+            crossAxisCount: 3,
+            childAspectRatio: 0.4,
+            crossAxisSpacing: 4.0,
+            mainAxisSpacing: 10,
           ),
           itemCount: novels.length,
           itemBuilder: (context, index) {

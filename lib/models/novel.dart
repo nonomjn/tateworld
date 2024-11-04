@@ -7,6 +7,9 @@ class Novel {
   final bool isCompleted;
   final File? imageCover;
   final String urlImageCover;
+  final int? totalChaptersPublished;
+  final int? totalChaptersDraft;
+  final int? totalViews;
 
   Novel({
     this.id,
@@ -15,6 +18,9 @@ class Novel {
     this.isCompleted = false,
     this.imageCover,
     this.urlImageCover = '',
+    this.totalChaptersPublished,
+    this.totalChaptersDraft,
+    this.totalViews,
   });
 
   Novel copyWith({
@@ -24,6 +30,9 @@ class Novel {
     bool? isCompleted,
     File? imageCover,
     String? urlImageCover,
+    int? totalChaptersPublished,
+    int? totalChaptersDraft,
+    int? totalViews,
   }) {
     return Novel(
       id: id ?? this.id,
@@ -32,6 +41,10 @@ class Novel {
       isCompleted: isCompleted ?? this.isCompleted,
       imageCover: imageCover ?? this.imageCover,
       urlImageCover: urlImageCover ?? this.urlImageCover,
+      totalChaptersPublished:
+          totalChaptersPublished ?? this.totalChaptersPublished,
+      totalChaptersDraft: totalChaptersDraft ?? this.totalChaptersDraft,
+      totalViews: totalViews ?? this.totalViews,
     );
   }
 
@@ -54,6 +67,9 @@ class Novel {
       description: json['description'],
       isCompleted: json['is_completed'],
       urlImageCover: json['url_image_cover'],
+      totalChaptersPublished: json['totalChaptersPublished'] ?? 0,
+      totalChaptersDraft: json['totalChaptersDraft'] ?? 0,
+      totalViews: json['totalViews'] ?? 0,
     );
   }
 }

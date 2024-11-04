@@ -23,7 +23,6 @@ class ChapterService {
       }
 
       final filterQuery = filters.join(' && ');
-      print(filterQuery);
 
       final chapterModels = await pb.collection('chapter').getFullList(
             filter: filterQuery,

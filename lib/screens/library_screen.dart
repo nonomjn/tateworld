@@ -4,14 +4,12 @@ import 'library/save_tab.dart';
 import 'library/reading_tab.dart';
 
 class LibraryScreen extends StatelessWidget {
-  const LibraryScreen({
-    super.key
-  });
+  const LibraryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3, // Số lượng tab
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Thư viện'),
