@@ -22,7 +22,11 @@ class AuthService {
         pb.authStore.onChange.listen((event) {
           onAuthChange!(event.model == null
               ? null
-              : User.fromJson(event.model!.toJson()));
+              : User.fromJson(event.model!.toJson()
+                ..addAll({
+                  'url_avatar': _getAvatarImageUrl(pb, event.model!),
+                  'url_cover': _getCoverImageUrl(pb, event.model!),
+                })));
         });
       });
     }
@@ -36,6 +40,8 @@ class AuthService {
         ...user.toJson(),
         'password': password,
         'passwordConfirm': password,
+        'emailVisibility': 'true',
+        'verified': 'true',
       });
       print('record: ${record.toJson()}');
       return User.fromJson(record.toJson());
@@ -76,6 +82,43 @@ class AuthService {
     if (model == null) {
       return null;
     }
-    return User.fromJson(model.toJson());
+    return User.fromJson(model.toJson()
+      ..addAll({
+        'url_avatar': _getAvatarImageUrl(pb, model),
+        'url_cover': _getCoverImageUrl(pb, model),
+      }));
+  }
+
+  Future<User> updateProfile(User user) async {
+    final pb = await getPocketBaseInstance();
+    try {
+      final record = await pb.collection('users').update(
+        user.id!,
+        body: user.toJson(),
+        files: [
+          if (user.avatar != null)
+            await http.MultipartFile.fromBytes(
+              'avatar',
+              await user.avatar!.readAsBytes(),
+              filename: user.avatar!.uri.pathSegments.last,
+            ),
+          if (user.cover != null)
+            await http.MultipartFile.fromBytes(
+              'cover',
+              await user.cover!.readAsBytes(),
+              filename: user.cover!.uri.pathSegments.last,
+            ),
+        ],
+      );
+      return user.copyWith(
+        url_avatar: _getAvatarImageUrl(pb, record),
+        url_cover: _getCoverImageUrl(pb, record),
+      );
+    } catch (error) {
+      if (error is ClientException) {
+        throw Exception(error.response['message']);
+      }
+      throw Exception('An error occurred');
+    }
   }
 }

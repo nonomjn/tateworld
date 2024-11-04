@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../models/user.dart';
 import '../../services/auth_service.dart';
+import '../../services/follow_service.dart';
 
 class AuthManager with ChangeNotifier {
   late final AuthService _authService;
@@ -33,6 +34,9 @@ class AuthManager with ChangeNotifier {
 
   Future<void> tryAutoLogin() async {
     final user = await _authService.getUserFromStore();
+    print("hellllllllllllllllllllllllo");
+    String? toJson = user?.toJson().toString();
+    print("try auto login user: $toJson");
     if (_loggedInUser != null) {
       _loggedInUser = user;
       notifyListeners();
@@ -41,5 +45,28 @@ class AuthManager with ChangeNotifier {
 
   Future<void> logout() async {
     return _authService.logout();
+  }
+
+  Future<void> updateProfile(User user) async {
+    final updatedUser = await _authService.updateProfile(user);
+    _loggedInUser = updatedUser;
+    notifyListeners();
+  }
+
+  Future<bool> isFollowing(String userId) async {
+    if (_loggedInUser?.id != null) {
+      return await FollowService().isFollowing(_loggedInUser!.id!, userId);
+    }
+    return false;
+  }
+
+  Future<void> followUser(User user) async {
+    await FollowService().followUser(_loggedInUser!, user);
+    notifyListeners();
+  }
+
+  Future<void> unfollowUser(User user) async {
+    await FollowService().unfollowUser(_loggedInUser!, user);
+    notifyListeners();
   }
 }

@@ -1,6 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../util.dart';
+import '../../manager/auth_manager.dart';
+import '../../models/user.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -12,15 +16,32 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _displayNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _introduceController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   File? _avatarImage;
   File? _coverImage;
+  User? user;
   final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
 
   DateTime? _selectedDateOfBirth;
-  String _selectedGender = 'Nam'; // Mặc định là Nam
-  List<String> _genders = ['Nam', 'Nữ', 'Khác'];
+  String? _selectedGender;
+  List<String> _genders = ['nam', 'nữ', 'không tiết lộ'];
+
+  @override
+  void initState() {
+    super.initState();
+    final authManager = context.read<AuthManager>();
+    user = authManager.user;
+    _displayNameController.text = user?.name ?? '';
+    _usernameController.text = user?.username ?? '';
+    _introduceController.text = user?.introduce ?? '';
+    _emailController.text = user?.email ?? '';
+    _selectedDateOfBirth = user?.DoB;
+    _selectedGender = user?.gender;
+    _avatarImage = user?.avatar;
+    _coverImage = user?.cover;
+  }
 
   void _selectAvatarImage() async {
     File? image = await _imagePickerHelper.pickImage(context);
@@ -43,7 +64,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _selectDateOfBirth() async {
     DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: _selectedDateOfBirth ?? DateTime(2000),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
@@ -60,13 +81,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 
+  Future<void> _saveUserProfile() async {
+    final authManager = context.read<AuthManager>();
+    final updatedUser = user!.copyWith(
+      name: _displayNameController.text,
+      introduce: _introduceController.text,
+      gender: _selectedGender,
+      DoB: _selectedDateOfBirth,
+      avatar: _avatarImage,
+      cover: _coverImage,
+    );
+    print("heloooooooooooooooooo");
+    print(_avatarImage);
+    print(_coverImage);
+    await authManager.updateProfile(updatedUser);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Cập nhật thông tin thành công!')),
+    );
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Chỉnh Thông Tin Cá Nhân',
-          style: Theme.of(context).textTheme.titleSmall,),
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -75,9 +117,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              // Lưu thông tin người dùng
-            },
+            onPressed: _saveUserProfile,
             child: const Text(
               'Lưu',
               style: TextStyle(color: Colors.black, fontSize: 16),
@@ -90,21 +130,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Avatar và ảnh bìa
             Center(
               child: GestureDetector(
                 onTap: _selectAvatarImage,
-                child: _avatarImage == null
-                    ? CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.grey[300],
-                        child: const Icon(Icons.person,
-                            size: 50, color: Colors.black54),
-                      )
-                    : CircleAvatar(
-                        radius: 50,
-                        backgroundImage: FileImage(_avatarImage!),
-                      ),
+                child: Opacity(
+                  opacity: _avatarImage == null && user?.url_avatar == null
+                      ? 0.5
+                      : 1.0,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.grey[300],
+                    backgroundImage: _avatarImage != null
+                        ? FileImage(_avatarImage!)
+                        : (user?.url_avatar != null
+                            ? NetworkImage(user!.url_avatar!)
+                            : null),
+                    child: user?.url_avatar == null
+                        ? const Icon(Icons.person,
+                            size: 50, color: Colors.black54)
+                        : null,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 5),
@@ -112,24 +158,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Center(
               child: GestureDetector(
                 onTap: _selectCoverImage,
-                child: _coverImage == null
-                    ? Container(
-                        width: double.infinity,
-                        height: 150,
-                        color: Colors.grey[300],
-                        child: const Center(
-                          child: Text(
-                            'Sửa Ảnh Bìa',
-                            style: TextStyle(color: Colors.black54),
+                child: Opacity(
+                  opacity:
+                      _coverImage == null && user?.cover == null ? 0.5 : 1.0,
+                  child: _coverImage == null
+                      ? Container(
+                          width: double.infinity,
+                          height: 150,
+                          color: Colors.grey[300],
+                          child: const Center(
+                            child: Text(
+                              'Sửa Ảnh Bìa',
+                              style: TextStyle(color: Colors.black54),
+                            ),
                           ),
+                        )
+                      : Image.file(
+                          _coverImage!,
+                          width: double.infinity,
+                          height: 150,
+                          fit: BoxFit.cover,
                         ),
-                      )
-                    : Image.file(
-                        _coverImage!,
-                        width: double.infinity,
-                        height: 150,
-                        fit: BoxFit.cover,
-                      ),
+                ),
               ),
             ),
             const SizedBox(height: 5),
@@ -137,21 +187,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             buildTextField(
               'Tên',
               _displayNameController,
-              hintText: 'Trieu Vi',
+              hintText: user?.name ?? 'Chưa có tên',
             ),
             const SizedBox(height: 5),
             const Divider(),
             buildTextField(
               'Tên Đăng Nhập',
               _usernameController,
-              hintText: 'trieuvi123',
+              hintText: user?.username ?? 'trieuvi123',
+              readOnly: true,
+            ),
+            const SizedBox(height: 5),
+            const Divider(),
+            buildTextField(
+              'Email',
+              _emailController,
+              hintText: user?.email ?? 'example@example.com',
+              readOnly: true,
             ),
             const SizedBox(height: 5),
             const Divider(),
             buildTextField(
               'Giới Thiệu Bản Thân',
-              _bioController,
-              hintText: 'Đây là giới thiệu bản thân',
+              _introduceController,
+              hintText: user?.introduce ?? 'Nhấn vào để nhập giới thiệu',
               maxLines: null,
             ),
             const SizedBox(height: 5),
@@ -172,7 +231,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: Text(
                   _selectedDateOfBirth != null
                       ? '${_selectedDateOfBirth!.day}/${_selectedDateOfBirth!.month}/${_selectedDateOfBirth!.year}'
-                      : '1/1/2000',
+                      : 'Chọn ngày sinh',
                   style: const TextStyle(color: Colors.black),
                 ),
               ),
@@ -204,7 +263,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget buildTextField(String label, TextEditingController controller,
-      {String? hintText, int? maxLines}) {
+      {String? hintText, int? maxLines, bool readOnly = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -215,6 +274,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         const SizedBox(height: 5),
         TextField(
           controller: controller,
+          readOnly: readOnly,
+          enabled: !readOnly,
           decoration: InputDecoration(
             hintText: hintText ?? '',
             hintStyle: const TextStyle(color: Colors.grey),
