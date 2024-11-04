@@ -50,7 +50,7 @@ class ReadingTab extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.network(
-                novel.imageUrl,
+                novel.urlImageCover,
                 fit: BoxFit.cover,
                 height: 200,
                 width: 140,
@@ -60,14 +60,14 @@ class ReadingTab extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: LinearProgressIndicator(
-                value: novel.progress,
+                // value: novel.progress,
                 backgroundColor: Colors.grey[300],
                 valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
               ),
             ),
             const SizedBox(height: 4),
             Text(
-              novel.title,
+              novel.novelName,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -86,10 +86,10 @@ class ReadingTab extends StatelessWidget {
                       size: 16,
                     ),
                     const SizedBox(width: 4),
-                    Text(
-                      '${novel.rating}',
-                      style: const TextStyle(fontSize: 12),
-                    ),
+                    // Text(
+                    //   '${novel.rating}',
+                    //   style: const TextStyle(fontSize: 12),
+                    // ),
                   ],
                 ),
                 Row(
@@ -100,10 +100,10 @@ class ReadingTab extends StatelessWidget {
                       size: 16,
                     ),
                     const SizedBox(width: 4),
-                    Text(
-                      '${novel.chapters}',
-                      style: const TextStyle(fontSize: 12),
-                    ),
+                    // Text(
+                    //   '${novel.chapters}',
+                    //   style: const TextStyle(fontSize: 12),
+                    // ),
                   ],
                 ),
               ],

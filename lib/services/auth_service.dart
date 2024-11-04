@@ -56,10 +56,8 @@ class AuthService {
   Future<User> login(String username, String password) async {
     final pb = await getPocketBaseInstance();
     try {
-      print('username: $username');
       final authRecord =
           await pb.collection('users').authWithPassword(username, password);
-      print('authRecord: $authRecord');
       return User.fromJson(authRecord.record!.toJson()
         ..addAll({
           'url_avatar': _getAvatarImageUrl(pb, authRecord.record!),

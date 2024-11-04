@@ -1,6 +1,3 @@
-import 'package:ct484_project/manager/auth_manager.dart';
-import 'package:ct484_project/manager/user_manager.dart';
-import 'package:ct484_project/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -10,7 +7,12 @@ import 'screens/library_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'screens/search_novel_screen.dart';
 import 'screens/write_novel/writing_novel_screen.dart';
+import 'screens/auth/login_screen.dart';
 
+import 'manager/novels_manager.dart';
+import 'manager/auth_manager.dart';
+import 'manager/chapter_manager.dart';
+import 'manager/user_manager.dart';
 Future<void> main() async {
   await dotenv.load();
   runApp(const MyApp());
@@ -27,7 +29,13 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthManager(),
         ),
         ChangeNotifierProvider(
+          create: (context) => NovelsManager(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => UserManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ChapterManager(),
         ),
       ],
       child: Consumer<AuthManager>(builder: (ctx, auth, child) {
