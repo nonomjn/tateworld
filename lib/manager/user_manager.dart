@@ -6,7 +6,7 @@ import '../../services/follow_service.dart';
 class UserManager with ChangeNotifier {
   final UserService _userService = UserService();
   final List<User> _users = [];
-  final Map<String, List<User>> _followers = {}; // Store followers by user ID
+  final Map<String, List<User>> _followers = {};
 
   List<User> get users => _users;
 
@@ -36,7 +36,7 @@ class UserManager with ChangeNotifier {
   }
 
   User? getUserById(String id) {
-    if(_users.isEmpty) return null;
+    if (_users.isEmpty) return null;
     return _users.firstWhere((user) => user.id == id);
   }
 
@@ -47,8 +47,8 @@ class UserManager with ChangeNotifier {
     }
 
     final user = await _userService.getUserbyId(userId);
-      _users.add(user);
-      notifyListeners();
+    _users.add(user);
+    notifyListeners();
     return user; // Return the fetched user
   }
 }

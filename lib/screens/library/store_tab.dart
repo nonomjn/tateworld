@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../manager/novels_manager.dart';
 import '../novels/novel_detail_screen.dart';
 import '../../models/novel.dart';
 import '../../manager/storage_manager.dart';
@@ -18,12 +18,35 @@ class _StoreTabState extends State<StoreTab> {
   @override
   void initState() {
     super.initState();
-    _fetchStorage = StorageManager().fetchStorage();
+    _fetchStorage = context.read<StorageManager>().fetchStorage();
   }
 
   @override
   Widget build(BuildContext context) {
-    final novels = NovelsManager().getNovels();
+    return FutureBuilder(
+      future: _fetchStorage,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        List<Novel> novels = context
+            .watch<StorageManager>()
+            .getStorage()
+            .map((storage) => storage.novel!)
+            .toList();
+        if (novels.isEmpty) {
+          return const Center(
+            child: Text("Bạn chưa có truyện lưu trữ nào!"),
+          );
+        }
+        return _buildStoreTab(novels: novels);
+      },
+    );
+  }
+
+  Widget _buildStoreTab({required List<Novel> novels}) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
@@ -68,6 +91,9 @@ class _StoreTabState extends State<StoreTab> {
                 fit: BoxFit.cover,
                 height: 200,
                 width: 140,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(Icons.broken_image, size: 140);
+                },
               ),
             ),
             const SizedBox(height: 4),
@@ -78,7 +104,7 @@ class _StoreTabState extends State<StoreTab> {
                 children: [
                   Text(
                     novel.novelName,
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -88,18 +114,18 @@ class _StoreTabState extends State<StoreTab> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
+                      const Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.star,
                             color: Colors.orange,
                             size: 16,
                           ),
-                          const SizedBox(width: 4),
-                          // Text(
-                          //   '${novel.rating}',
-                          //   style: const TextStyle(fontSize: 12),
-                          // ),
+                          SizedBox(width: 4),
+                          Text(
+                            '2',
+                            style: TextStyle(fontSize: 12),
+                          ),
                         ],
                       ),
                       Row(
@@ -110,10 +136,10 @@ class _StoreTabState extends State<StoreTab> {
                             size: 16,
                           ),
                           const SizedBox(width: 4),
-                          // Text(
-                          //   '${novel.chapters}',
-                          //   style: const TextStyle(fontSize: 12),
-                          // ),
+                          Text(
+                            novel.totalChaptersPublished.toString(),
+                            style: const TextStyle(fontSize: 12),
+                          ),
                         ],
                       ),
                     ],
