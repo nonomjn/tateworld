@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'show_error.dart';
 import 'register_screen.dart';
 import '../../manager/auth_manager.dart';
-
+import '../../main.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 

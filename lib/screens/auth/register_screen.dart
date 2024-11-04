@@ -350,9 +350,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             isExpanded: true,
             underline: const SizedBox(),
             items: <String>[
-              'Nam',
-              'Nữ',
-              'Không tiết lộ',
+              'nam',
+              'nữ',
+              'không tiết lộ',
             ].map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,

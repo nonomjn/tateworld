@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/user.dart';
+import '../../manager/user_manager.dart';
 
 class ProfileIntroduction extends StatelessWidget {
-  const ProfileIntroduction({super.key});
+  final User user;
+  const ProfileIntroduction({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +24,10 @@ class ProfileIntroduction extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Đây là thông tin giới thiệu cá nhân của người dùng...',
+          Text(
+            user.introduce?.isNotEmpty == true
+                ? user.introduce!
+                : 'Chưa có giới thiệu',
             style: TextStyle(fontSize: 16),
           ),
           const SizedBox(height: 20),
@@ -51,7 +58,7 @@ class ProfileIntroduction extends StatelessWidget {
                           child: AspectRatio(
                             aspectRatio: 3 / 5,
                             child: Container(
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: NetworkImage(
                                       'https://images.pexels.com/photos/1731619/pexels-photo-1731619.jpeg'), // Ảnh bìa
