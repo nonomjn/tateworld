@@ -66,7 +66,7 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    return {  
+    return {
       'email': email,
       'name': name,
       'username': username,
@@ -86,15 +86,20 @@ class User {
         username: json['username'] ?? '',
         role: json['role'] ?? '',
         gender: json['gender'] ?? '',
-        DoB: DateTime.parse(json['DoB']) ,
+        DoB: DateTime.parse(json['DoB']),
         introduce: json['introduce'] ?? '',
         url_avatar: json['url_avatar'] ?? '',
         url_cover: json['url_cover'] ?? '',
       );
     } catch (e) {
-      print('Error parsing User from JSON: $e');
       return User(
-          id: '', email: '', name: '', username: '', role: '', gender: '', DoB: DateTime.now());
+          id: '',
+          email: '',
+          name: '',
+          username: '',
+          role: '',
+          gender: '',
+          DoB: DateTime.now());
     }
   }
 }

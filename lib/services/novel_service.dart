@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 import '../models/novel.dart';
@@ -39,14 +38,34 @@ class NovelService {
 
       final novelModels = await pb.collection('novels').getFullList(
             filter: filterQuery,
-            expand: 'chapters',
+            expand: 'chapter_via_novel',
           );
 
       for (final novelModel in novelModels) {
+        int totalChaptersPublished = 0;
+        int totalChaptersDraft = 0;
+        int totalViews = 0;
+
+        final chapters =
+            novelModel.expand['chapter_via_novel'] as List<RecordModel>;
+        for (final chapter in chapters) {
+          final status = chapter.getStringValue('status');
+          if (status == 'published') {
+            totalChaptersPublished++;
+          } else if (status == 'draft') {
+            totalChaptersDraft++;
+          }
+
+          totalViews += chapter.getIntValue('count_view');
+        }
+
         novels.add(Novel.fromJson(
           novelModel.toJson()
             ..addAll({
               'url_image_cover': _getImageCover(pb, novelModel),
+              'totalChaptersPublished': totalChaptersPublished,
+              'totalChaptersDraft': totalChaptersDraft,
+              'totalViews': totalViews,
             }),
         ));
       }
@@ -56,7 +75,6 @@ class NovelService {
       return novels;
     }
   }
-
   // Future<Novel?> addNovel(Novel novel) async {
   //   try {
   //     final pb = await getPocketBaseInstance();

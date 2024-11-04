@@ -12,6 +12,7 @@ import 'screens/auth/login_screen.dart';
 import 'manager/novels_manager.dart';
 import 'manager/auth_manager.dart';
 import 'manager/chapter_manager.dart';
+import 'manager/storage_manager.dart';
 
 Future<void> main() async {
   await dotenv.load();
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ChapterManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => StorageManager(),
         ),
       ],
       child: Consumer<AuthManager>(builder: (ctx, auth, child) {

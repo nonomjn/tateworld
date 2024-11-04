@@ -14,14 +14,6 @@ class WritingNovelScreen extends StatefulWidget {
 }
 
 class _WritingNovelScreenState extends State<WritingNovelScreen> {
-  late Future<void> _fetchNovelDraft;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchNovelDraft = context.read<NovelsManager>().fetchDraftNovel();
-  }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -38,9 +30,9 @@ class _WritingNovelScreenState extends State<WritingNovelScreen> {
             ),
           ],
         ),
-        body: Column(
+        body: const Column(
           children: [
-            const TabBar(
+            TabBar(
               tabs: [
                 Tab(text: 'Đã đăng tải'),
                 Tab(text: 'Bản thảo'),
@@ -89,73 +81,60 @@ class NovelDraftGridView extends StatelessWidget {
       itemCount: novels.length,
       itemBuilder: (context, index) {
         final novel = novels[index];
-        final chapterManager =
-            Provider.of<ChapterManager>(context, listen: false);
 
-        return FutureBuilder(
-          future: context.read<ChapterManager>().fetchChapters(novel.id!),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Card(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        return Card(
+          margin: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.network(
+                novel.urlImageCover,
+                width: 80,
+                height: 120,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network(
-                      novel.urlImageCover,
-                      width: 80,
-                      height: 120,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            novel.novelName,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            'Số chương đã đăng: ${chapterManager.totalChapterPublished}',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                          Text(
-                            '${chapterManager.totalChapterDrafts} bản thảo',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ],
+                    Text(
+                      novel.novelName,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    PopupMenuButton(
-                      color: Colors.white,
-                      icon: const Icon(Icons.more_vert_sharp),
-                      itemBuilder: (context) {
-                        return [
-                          const PopupMenuItem(
-                            child: Text('Xem trước'),
-                          ),
-                          const PopupMenuItem(
-                            child: Text('Xóa'),
-                          ),
-                        ];
-                      },
+                    const SizedBox(height: 3),
+                    Text(
+                      'Số chương đã đăng: ${novel.totalChaptersPublished}',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                    Text(
+                      '${novel.totalChaptersDraft} bản thảo',
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
-              );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
+              ),
+              PopupMenuButton(
+                color: Colors.white,
+                icon: const Icon(Icons.more_vert_sharp),
+                itemBuilder: (context) {
+                  return [
+                    const PopupMenuItem(
+                      child: Text('Xem trước'),
+                    ),
+                    const PopupMenuItem(
+                      child: Text('Xóa'),
+                    ),
+                  ];
+                },
+              ),
+            ],
+          ),
         );
       },
     );
@@ -189,72 +168,59 @@ class NovelPostedGridView extends StatelessWidget {
       itemCount: novels.length,
       itemBuilder: (context, index) {
         final novel = novels[index];
-        final chapterManager =
-            Provider.of<ChapterManager>(context, listen: false);
-        return FutureBuilder(
-          future: context.read<ChapterManager>().fetchChapters(novel.id!),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Card(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+        return Card(
+          margin: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.network(
+                novel.urlImageCover,
+                width: 80,
+                height: 120,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network(
-                      novel.urlImageCover,
-                      width: 80,
-                      height: 120,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            novel.novelName,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            'Số chương đã đăng: ${chapterManager.totalChapterPublished}',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                          Text(
-                            '${chapterManager.totalChapterDrafts} bản thảo',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ],
+                    Text(
+                      novel.novelName,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    PopupMenuButton(
-                      color: Colors.white,
-                      icon: const Icon(Icons.more_vert_sharp),
-                      itemBuilder: (context) {
-                        return [
-                          const PopupMenuItem(
-                            child: Text('Xem trước'),
-                          ),
-                          const PopupMenuItem(
-                            child: Text('Xóa'),
-                          ),
-                        ];
-                      },
+                    const SizedBox(height: 3),
+                    Text(
+                      'Số chương đã đăng: ${novel.totalChaptersPublished}',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                    Text(
+                      '${novel.totalChaptersDraft} bản thảo',
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
-              );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
+              ),
+              PopupMenuButton(
+                color: Colors.white,
+                icon: const Icon(Icons.more_vert_sharp),
+                itemBuilder: (context) {
+                  return [
+                    const PopupMenuItem(
+                      child: Text('Xem trước'),
+                    ),
+                    const PopupMenuItem(
+                      child: Text('Xóa'),
+                    ),
+                  ];
+                },
+              ),
+            ],
+          ),
         );
       },
     );
