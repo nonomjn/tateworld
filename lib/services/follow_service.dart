@@ -6,17 +6,24 @@ import './pocketbase_client.dart';
 import '../models/follow.dart';
 
 class FollowService {
-  Future<follow> followUser(User follower, User following) async {
+Future<Follow?> followUser(User follower, User following) async {
+  try {
     final pb = await getPocketBaseInstance();
     final record = await pb.collection('follow').create(body: {
       'follower': follower.id,
       'following': following.id,
     });
-    return follow(
+    return Follow(
       follower: follower,
       following: following,
     );
+
+  } catch (e) {
+    print('Error while following user: $e');
+    return null;
   }
+}
+
 
   Future<void> unfollowUser(User follower, User following) async {
     final pb = await getPocketBaseInstance();
@@ -50,5 +57,19 @@ class FollowService {
     return {
       'following': records.map((record) => record.getStringValue('following')).toList(),
     };
+  }
+  // viết hàm kiểm tra xem user đã follow chưa
+Future<bool> isFollowing(String follower_id, String following_id) async {
+    try {
+      final pb = await getPocketBaseInstance();
+      final records = await pb.collection('follow').getFullList(
+            filter: "follower ?~'$follower_id' && following ?~ '$following_id'",
+            expand: 'follower,following',
+          );
+      return records.isNotEmpty;
+    } catch (e) {
+      print('Error checking if user is following: $e');
+      return false;
+    }
   }
 }

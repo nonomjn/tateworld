@@ -38,6 +38,7 @@ class User {
     String? introduce,
     String? role,
     String? gender,
+    DateTime? DoB,
     File? avatar,
     File? cover,
     String? url_avatar,
@@ -53,6 +54,7 @@ class User {
       DoB: DoB ?? this.DoB,
       introduce: introduce ?? this.introduce,
       cover: cover ?? this.cover,
+      avatar: avatar ?? this.avatar,
       url_avatar: url_avatar ?? this.url_avatar,
       url_cover: url_cover ?? this.url_cover,
     );

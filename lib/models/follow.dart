@@ -2,18 +2,18 @@ import 'dart:io';
 
 import 'user.dart';
 
-class follow {
+class Follow {
   User follower;
   User following;
-  follow({
+  Follow({
     required this.follower,
     required this.following,
   });
-  follow copyWith({
+  Follow copyWith({
     User? follower,
     User? following,
   }) {
-    return follow(
+    return Follow(
       follower: follower ?? this.follower,
       following: following ?? this.following,
     );

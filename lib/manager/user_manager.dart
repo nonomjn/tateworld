@@ -1,46 +1,54 @@
-import 'dart:async';
 import 'package:flutter/foundation.dart';
-
 import '../../models/user.dart';
 import '../../services/user_service.dart';
 import '../../services/follow_service.dart';
 
 class UserManager with ChangeNotifier {
-  late final UserService _userService;
-  late List<User> _users;
+  final UserService _userService = UserService();
+  final List<User> _users = [];
+  final Map<String, List<User>> _followers = {}; // Store followers by user ID
 
-  UserManager() {
-    _userService = UserService();
-    _users = [];
+  List<User> get users => _users;
+
+  List<User> getFollowersForUser(String userId) {
+    return _followers[userId] ?? [];
   }
 
-  List<User> get users {
-    return _users;
+  Future<void> getFollowing(User user) async {
+    _users.clear();
+    final following = await FollowService().getFollowing(user);
+    for (final id in following['following']) {
+      final followingUser = await _userService.getUserbyId(id);
+      _users.add(followingUser);
+    }
+    notifyListeners();
   }
 
-  User getUserById(String id) {
+  Future<void> fetchFollowers(User user) async {
+    if (user.id == null || _followers.containsKey(user.id!)) return;
+    _followers[user.id!] = [];
+    final followerIds = await FollowService().getFollowers(user);
+    for (final id in followerIds) {
+      final follower = await _userService.getUserbyId(id);
+      _followers[user.id]!.add(follower);
+    }
+    notifyListeners();
+  }
+
+  User? getUserById(String id) {
+    if(_users.isEmpty) return null;
     return _users.firstWhere((user) => user.id == id);
   }
 
-  Future<void> getfollowing(User user) async {
-    _users = [];
-    final following = await FollowService().getFollowing(user);
-    for (final id in following['following']) {
-      final user = await _userService.getUserbyId(id);
-      _users.add(user);
+  Future<User?> addUser(String userId) async {
+    final existingUser = getUserById(userId);
+    if (existingUser != null) {
+      return existingUser;
     }
-    notifyListeners();
-  }
 
-  Future<void> getfollowers(User user) async {
-    _users = [];
-    final followers = await FollowService().getFollowers(user);
-    for (final id in followers) {
-      final user = await _userService.getUserbyId(id);
+    final user = await _userService.getUserbyId(userId);
       _users.add(user);
-      final url_avatar = user.url_avatar;
-      print('url_avatar: $url_avatar');
-    }
-    notifyListeners();
+      notifyListeners();
+    return user; // Return the fetched user
   }
 }

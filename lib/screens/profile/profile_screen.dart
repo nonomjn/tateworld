@@ -13,7 +13,7 @@ import '../auth/login_screen.dart';
 import '../../models/user.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final String? userId; // Sử dụng String? để `userId` có thể là null
+  final String? userId;
   const ProfileScreen({super.key, this.userId});
 
   @override
@@ -23,29 +23,17 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with TickerProviderStateMixin {
   bool _isSettingsOpen = false;
+  bool isLoading = true;
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
   late String userId;
   late bool isCurrentUser;
-  late User user;
+  User? user;
+  List<User> followers = [];
 
   @override
   void initState() {
     super.initState();
-
-    final currentUser = context.read<AuthManager>().user;
-    userId = widget.userId ?? currentUser?.id ?? '';
-    isCurrentUser = (widget.userId == null || widget.userId == currentUser?.id);
-
-    if (isCurrentUser) {
-      // Nếu là người dùng hiện tại, lấy thông tin từ AuthManager
-      user = currentUser!;
-    } else {
-      // Nếu không phải người dùng hiện tại, lấy thông tin từ UserManager dựa trên userId
-      final userManager = context.read<UserManager>();
-      user = userManager.getUserById(userId);
-    }
-
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -54,6 +42,31 @@ class _ProfileScreenState extends State<ProfileScreen>
       begin: const Offset(1.0, 0.0),
       end: Offset.zero,
     ).animate(_controller);
+
+    _initializeUserData();
+  }
+
+  Future<void> _initializeUserData() async {
+    final currentUser = context.read<AuthManager>().user;
+    final userManager = context.read<UserManager>();
+
+    userId = widget.userId ?? currentUser?.id ?? '';
+    isCurrentUser = (widget.userId == null || widget.userId == currentUser?.id);
+
+    if (isCurrentUser) {
+      user = currentUser;
+    } else {
+      user = await userManager.addUser(userId);
+    }
+
+    if (user != null) {
+      await userManager.fetchFollowers(user!);
+      followers = userManager.getFollowersForUser(user!.id!);
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void _toggleSettings() {
@@ -75,14 +88,16 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading || user == null || followers.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return SafeArea(
       child: Scaffold(
-        extendBodyBehindAppBar: true, // Để AppBar nằm trên ảnh nền
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
-          backgroundColor: Colors.transparent, // AppBar trong suốt
-          elevation: 0, // Không có bóng
-          actions: isCurrentUser &&
-                  !_isSettingsOpen // Chỉ hiển thị nếu là người dùng hiện tại và hộp thoại setting chưa mở
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: isCurrentUser && !_isSettingsOpen
               ? [
                   IconButton(
                     icon: const Icon(
@@ -92,23 +107,22 @@ class _ProfileScreenState extends State<ProfileScreen>
                     onPressed: _toggleSettings,
                   ),
                 ]
-              : null, // Ẩn nút Settings nếu không phải là người dùng hiện tại
+              : null,
         ),
         body: Stack(
           children: [
-            ProfileHeader(), // Gọi widget Header với userId
+            ProfileHeader(),
             SingleChildScrollView(
               child: Column(
                 children: [
                   const SizedBox(height: 50),
-                  ProfileInfo(user: user),
-                  ProfileIntroduction(user: user),
-                  ProfileFollowers(user: user),
-                
+                  ProfileInfo(user: user!, followCount: followers.length),
+                  ProfileIntroduction(user: user!),
+                  ProfileFollowers(user: user!, followers: followers),
                 ],
               ),
             ),
-            if (_isSettingsOpen) // Hiển thị hộp thoại cài đặt khi mở
+            if (_isSettingsOpen)
               GestureDetector(
                 onTap: _toggleSettings,
                 child: Container(
@@ -159,7 +173,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                               leading: const Icon(Icons.logout),
                               title: const Text('Đăng xuất'),
                               onTap: () {
-                                context.read<AuthManager>().logout();
+                                  context.read<AuthManager>().logout();
+
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(

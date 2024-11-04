@@ -5,7 +5,7 @@ import '../models/user.dart';
 import './pocketbase_client.dart';
 
 class AuthService {
-    String _getAvatarImageUrl(PocketBase pb, RecordModel usermodel) {
+  String _getAvatarImageUrl(PocketBase pb, RecordModel usermodel) {
     final avatarImageName = usermodel.getStringValue('avatar');
     return pb.files.getUrl(usermodel, avatarImageName).toString();
   }
@@ -14,6 +14,7 @@ class AuthService {
     final coverImageName = usermodel.getStringValue('cover');
     return pb.files.getUrl(usermodel, coverImageName).toString();
   }
+
   void Function(User? user)? onAuthChange;
   AuthService({this.onAuthChange}) {
     if (onAuthChange != null) {
@@ -21,7 +22,8 @@ class AuthService {
         pb.authStore.onChange.listen((event) {
           onAuthChange!(event.model == null
               ? null
-              : User.fromJson(event.model!.toJson()..addAll({
+              : User.fromJson(event.model!.toJson()
+                ..addAll({
                   'url_avatar': _getAvatarImageUrl(pb, event.model!),
                   'url_cover': _getCoverImageUrl(pb, event.model!),
                 })));
@@ -38,6 +40,8 @@ class AuthService {
         ...user.toJson(),
         'password': password,
         'passwordConfirm': password,
+        'emailVisibility': 'true',
+        'verified': 'true',
       });
       print('record: ${record.toJson()}');
       return User.fromJson(record.toJson());
@@ -55,11 +59,12 @@ class AuthService {
       print('username: $username');
       final authRecord =
           await pb.collection('users').authWithPassword(username, password);
-        print('authRecord: $authRecord');
-      return User.fromJson(authRecord.record!.toJson()..addAll({
-        'url_avatar': _getAvatarImageUrl(pb, authRecord.record!),
-        'url_cover': _getCoverImageUrl(pb, authRecord.record!),
-      }));
+      print('authRecord: $authRecord');
+      return User.fromJson(authRecord.record!.toJson()
+        ..addAll({
+          'url_avatar': _getAvatarImageUrl(pb, authRecord.record!),
+          'url_cover': _getCoverImageUrl(pb, authRecord.record!),
+        }));
     } catch (error) {
       if (error is ClientException) {
         throw Exception(error.response['message']);
@@ -79,10 +84,11 @@ class AuthService {
     if (model == null) {
       return null;
     }
-    return User.fromJson(model.toJson()..addAll({
-      'url_avatar': _getAvatarImageUrl(pb, model),
-      'url_cover': _getCoverImageUrl(pb, model),
-    }));
+    return User.fromJson(model.toJson()
+      ..addAll({
+        'url_avatar': _getAvatarImageUrl(pb, model),
+        'url_cover': _getCoverImageUrl(pb, model),
+      }));
   }
 
   Future<User> updateProfile(User user) async {
@@ -96,13 +102,13 @@ class AuthService {
             await http.MultipartFile.fromBytes(
               'avatar',
               await user.avatar!.readAsBytes(),
-              filename: user.url_avatar!.split('/').last,
+              filename: user.avatar!.uri.pathSegments.last,
             ),
           if (user.cover != null)
             await http.MultipartFile.fromBytes(
               'cover',
               await user.cover!.readAsBytes(),
-              filename: user.url_cover!.split('/').last,
+              filename: user.cover!.uri.pathSegments.last,
             ),
         ],
       );
@@ -117,6 +123,4 @@ class AuthService {
       throw Exception('An error occurred');
     }
   }
-
-  
 }
