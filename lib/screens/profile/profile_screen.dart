@@ -50,24 +50,21 @@ class _ProfileScreenState extends State<ProfileScreen>
     final userManager = context.read<UserManager>();
     final followManager = context.read<FollowManager>();
 
-    // Lấy userId từ widget hoặc currentUser
     userId = widget.userId ?? currentUser?.id ?? '';
     isCurrentUser = (widget.userId == null || widget.userId == currentUser?.id);
 
-    if (isCurrentUser) {
-      user = currentUser;
-    } else {
-      user = await userManager.addUser(userId);
-    }
+    user = isCurrentUser ? currentUser : await userManager.addUser(userId);
 
     if (user != null) {
       await followManager.fetchFollowers(user!);
       followers = followManager.getFollowers(user!.id!);
     }
 
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void _toggleSettings() {
@@ -90,7 +87,12 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(child: CircularProgressIndicator())
+        ? const SafeArea(
+          child: Center(child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          
+          )),
+        )
         : SafeArea(
             child: Scaffold(
               extendBodyBehindAppBar: true,
@@ -111,14 +113,17 @@ class _ProfileScreenState extends State<ProfileScreen>
               ),
               body: Stack(
                 children: [
-                  ProfileHeader(),
+                  const ProfileHeader(),
                   SingleChildScrollView(
                     child: Column(
                       children: [
                         const SizedBox(height: 50),
-                        ProfileInfo(user: user!, followCount: followers.length),
-                        ProfileIntroduction(user: user!),
-                        ProfileFollowers(user: user!, followers: followers),
+                        if (user != null) ...[
+                          ProfileInfo(
+                              user: user!, followCount: followers.length),
+                          ProfileIntroduction(user: user!),
+                          ProfileFollowers(user: user!, followers: followers),
+                        ],
                       ],
                     ),
                   ),

@@ -52,9 +52,7 @@ class SettingsDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Đăng xuất'),
             onTap: () {
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => LoginScreen())
-              );
+              Navigator.popUntil(context, (route) => route.isFirst);
               context.read<AuthManager>().logout();
             },
           ),
