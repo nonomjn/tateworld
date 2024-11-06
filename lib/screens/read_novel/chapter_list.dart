@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
-import '../../models/novel_manager.dart'; 
+import 'package:provider/provider.dart';
+
+import '../../models/novel.dart';
+import '../../models/chapter.dart';
+import '../../manager/current_chapter_manager.dart';
+
+import '../../manager/chapter_manager.dart';
+import 'read_novel.dart';
 
 class ChapterList extends StatelessWidget {
-  final ChapterModel chapterModel; 
+  final Novel novel;
 
-  
   const ChapterList({
     super.key,
-    required this.chapterModel,
+    required this.novel,
   });
 
   @override
   Widget build(BuildContext context) {
-    final model = chapterModel; 
+    final currentChapter =
+        context.watch<CurrentChapterManager>().currentChapter;
 
     return Align(
-      alignment: Alignment.centerRight, 
+      alignment: Alignment.centerRight,
       child: SafeArea(
         child: Material(
-          color: Colors.white, 
+          color: Colors.white,
           elevation: 16,
           child: Container(
-            width: MediaQuery.of(context).size.width *
-                0.68,
-            height: MediaQuery.of(context)
-                .size
-                .height,
+            width: MediaQuery.of(context).size.width * 0.68,
+            height: MediaQuery.of(context).size.height,
             padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +38,7 @@ class ChapterList extends StatelessWidget {
                 Row(
                   children: [
                     Image.network(
-                      model.novelImageUrl,
+                      novel.urlImageCover,
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -42,7 +46,7 @@ class ChapterList extends StatelessWidget {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'Tên truyện: ${model.novelTitle}',
+                        'Tên truyện: ${novel.novelName}',
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -58,30 +62,43 @@ class ChapterList extends StatelessWidget {
                 // Hiển thị danh sách chương bằng ListView
                 Expanded(
                   child: ListView.builder(
-                    itemCount: model.chapters.length,
+                    itemCount: context.watch<ChapterManager>().chapters.length,
                     itemBuilder: (BuildContext context, int index) {
-                      // Nếu chương hiện tại, đổi màu nền và màu chữ
-                      bool isCurrentChapter = index == model.currentChapter;
+                      bool isCurrentChapter = currentChapter != null &&
+                          currentChapter.id ==
+                              context
+                                  .watch<ChapterManager>()
+                                  .chapters[index]
+                                  .id;
 
                       return Container(
                         color: isCurrentChapter
-                            ? Colors
-                                .orange[100]
-                            : Colors.transparent, 
+                            ? Colors.orange[100]
+                            : Colors.transparent,
                         child: ListTile(
                           leading: const Icon(Icons.book, color: Colors.orange),
                           title: Text(
-                            model.chapters[index],
+                            'Chương ${index + 1}: ${context.watch<ChapterManager>().chapters[index].title}',
                             style: TextStyle(
                               color: isCurrentChapter
-                                  ? Colors
-                                      .orange 
+                                  ? Colors.orange
                                   : Colors.black,
                             ),
                           ),
                           onTap: () {
-                            Navigator.pop(
-                                context); 
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReadNovel(
+                                  id: context
+                                      .watch<ChapterManager>()
+                                      .chapters[index]
+                                      .id!,
+                                  novel: novel,
+                                ),
+                              ),
+                              (Route<dynamic> route) => route.isFirst,
+                            );
                           },
                         ),
                       );

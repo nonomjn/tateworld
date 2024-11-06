@@ -19,10 +19,10 @@ class NovelsManager with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchNovelByUser() async {
-    _novels = await _novelService.fetchNovel(filteredByUser: true);
-    notifyListeners();
-  }
+  // Future<void> fetchNovelByUser() async {
+  //   _novels = await _novelService.fetchNovel(filteredByUser: true);
+  //   notifyListeners();
+  // }
 
   Future<void> fetchDraftNovel() async {
     _novels =
@@ -34,5 +34,21 @@ class NovelsManager with ChangeNotifier {
     _novels =
         await _novelService.fetchNovel(filteredByUser: true, isComplete: true);
     notifyListeners();
+  }
+
+  Novel? getNovelById(String id) {
+    return _novels.firstWhere((novel) => novel.id == id);
+  }
+
+  Future<void> fetchNovelByIdAndReplace(String id) async {
+    final novel = await _novelService.fetchNovelById(id);
+    if (novel != null) {
+      final index = _novels.indexWhere((novel) => novel.id == id);
+      if (index != -1) {
+        _novels[index] = novel;
+        notifyListeners();
+      }
+      notifyListeners();
+    }
   }
 }

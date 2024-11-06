@@ -39,7 +39,9 @@ class _ProfileFollowersState extends State<ProfileFollowers> {
           SizedBox(
             height: 100,
             child: widget.followers.isEmpty
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(
+                    child: Text('Chưa có người theo dõi'),
+                  )
                 : ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: widget.followers.length,

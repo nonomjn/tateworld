@@ -1,41 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'theme_picker.dart';
 import 'font_size_picker.dart';
 import 'font_picker.dart';
+import '../../manager/theme_manager.dart';
 
-class FontSettingsDialog extends StatefulWidget {
-  final String selectedFont;
-  final double fontSize;
-  final ValueChanged<String> onFontChanged;
-  final ValueChanged<double> onFontSizeChanged;
-  final ValueChanged<ThemeData> onThemeChanged;
 
-  const FontSettingsDialog({
-    super.key,
-    required this.selectedFont,
-    required this.fontSize,
-    required this.onFontChanged,
-    required this.onFontSizeChanged,
-    required this.onThemeChanged,
-  });
-
-  @override
-  _FontSettingsDialogState createState() => _FontSettingsDialogState();
-}
-
-class _FontSettingsDialogState extends State<FontSettingsDialog> {
-  late String _currentFont;
-  late double _currentFontSize;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentFont = widget.selectedFont;
-    _currentFontSize = widget.fontSize;
-  }
+class FontSettingsDialog extends StatelessWidget {
+  const FontSettingsDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var fontThemeManager = Provider.of<FontThemeManager>(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -49,30 +26,20 @@ class _FontSettingsDialogState extends State<FontSettingsDialog> {
         const SizedBox(height: 10),
 
         // Widget chọn theme
-        ThemePicker(onThemeChanged: widget.onThemeChanged),
+        ThemePicker(onThemeChanged: fontThemeManager.changeTheme),
         const SizedBox(height: 20),
 
         // Widget chọn kích thước chữ
         FontSizePicker(
-          currentFontSize: _currentFontSize,
-          onFontSizeChanged: (newSize) {
-            setState(() {
-              _currentFontSize = newSize;
-            });
-            widget.onFontSizeChanged(newSize);
-          },
+          currentFontSize: fontThemeManager.fontSize,
+          onFontSizeChanged: fontThemeManager.changeFontSize,
         ),
         const SizedBox(height: 20),
 
         // Widget chọn font chữ
         FontPicker(
-          currentFont: _currentFont,
-          onFontChanged: (newFont) {
-            setState(() {
-              _currentFont = newFont;
-            });
-            widget.onFontChanged(newFont);
-          },
+          currentFont:  fontThemeManager.fontFamily,
+          onFontChanged: fontThemeManager.changeFontFamily,
         ),
       ],
     );

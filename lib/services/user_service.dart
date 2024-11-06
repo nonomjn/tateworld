@@ -16,10 +16,8 @@ String _getAvatarImageUrl(PocketBase pb, RecordModel usermodel) {
   Future<User> getUserbyId(String userId) async {
     try {
        userId = userId.replaceAll(RegExp(r'\[|\]'), '');
-      print('userId: $userId');
       final pb = await getPocketBaseInstance();
       final record = await pb.collection('users').getOne(userId);
-      print('record: $record');
       return User.fromJson(record.toJson()..addAll({
         'url_avatar': _getAvatarImageUrl(pb, record),
         'url_cover': _getCoverImageUrl(pb, record),

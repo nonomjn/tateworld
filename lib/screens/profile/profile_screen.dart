@@ -1,16 +1,15 @@
-import 'dart:ui';
-import 'package:provider/provider.dart';
-import '/screens/profile/edit_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../manager/follow_manager.dart';
 import '../../manager/user_manager.dart';
 import '/manager/auth_manager.dart';
 import 'profile_header.dart';
 import 'profile_info.dart';
 import 'profile_introduction.dart';
 import 'profile_followers.dart';
-import '../auth/login_screen.dart';
 import '../../models/user.dart';
+import 'settings_drawer.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String? userId;
@@ -49,7 +48,9 @@ class _ProfileScreenState extends State<ProfileScreen>
   Future<void> _initializeUserData() async {
     final currentUser = context.read<AuthManager>().user;
     final userManager = context.read<UserManager>();
+    final followManager = context.read<FollowManager>();
 
+    // Lấy userId từ widget hoặc currentUser
     userId = widget.userId ?? currentUser?.id ?? '';
     isCurrentUser = (widget.userId == null || widget.userId == currentUser?.id);
 
@@ -60,8 +61,8 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
 
     if (user != null) {
-      await userManager.fetchFollowers(user!);
-      followers = userManager.getFollowersForUser(user!.id!);
+      await followManager.fetchFollowers(user!);
+      followers = followManager.getFollowers(user!.id!);
     }
 
     setState(() {
@@ -88,116 +89,56 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading || user == null || followers.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    return SafeArea(
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: isCurrentUser && !_isSettingsOpen
-              ? [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                    ),
-                    onPressed: _toggleSettings,
-                  ),
-                ]
-              : null,
-        ),
-        body: Stack(
-          children: [
-            ProfileHeader(),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 50),
-                  ProfileInfo(user: user!, followCount: followers.length),
-                  ProfileIntroduction(user: user!),
-                  ProfileFollowers(user: user!, followers: followers),
-                ],
+    return isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : SafeArea(
+            child: Scaffold(
+              extendBodyBehindAppBar: true,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                actions: isCurrentUser && !_isSettingsOpen
+                    ? [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                          ),
+                          onPressed: _toggleSettings,
+                        ),
+                      ]
+                    : null,
               ),
-            ),
-            if (_isSettingsOpen)
-              GestureDetector(
-                onTap: _toggleSettings,
-                child: Container(
-                  color: Colors.black.withOpacity(0.5),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: SlideTransition(
-                      position: _offsetAnimation,
+              body: Stack(
+                children: [
+                  ProfileHeader(),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 50),
+                        ProfileInfo(user: user!, followCount: followers.length),
+                        ProfileIntroduction(user: user!),
+                        ProfileFollowers(user: user!, followers: followers),
+                      ],
+                    ),
+                  ),
+                  if (_isSettingsOpen)
+                    GestureDetector(
+                      onTap: _toggleSettings,
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 2 / 3,
-                        color: Colors.white,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              color: Colors.grey[200],
-                              height: 60,
-                              child: const Center(
-                                child: Text(
-                                  'Cài đặt',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.person),
-                              title: const Text('Đổi thông tin cá nhân'),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const EditProfileScreen(),
-                                  ),
-                                );
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.lock),
-                              title: const Text('Đổi mật khẩu'),
-                              onTap: _toggleSettings,
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.logout),
-                              title: const Text('Đăng xuất'),
-                              onTap: () {
-                                  context.read<AuthManager>().logout();
-
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginScreen(),
-                                  ),
-                                );
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.notifications),
-                              title: const Text('Thông báo'),
-                              onTap: _toggleSettings,
-                            ),
-                          ],
+                        color: Colors.black.withOpacity(0.5), // Hiệu ứng mờ
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: SlideTransition(
+                            position: _offsetAnimation,
+                            child: SettingsDrawer(onClose: _toggleSettings),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
+                ],
               ),
-          ],
-        ),
-      ),
-    );
+            ),
+          );
   }
 }

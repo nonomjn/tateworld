@@ -5,6 +5,10 @@ class Novel {
   final String novelName;
   final String description;
   final bool isCompleted;
+  final File? imageAuthAvatar;
+  final String? urlAuthAvatar;
+  final String? authName;
+  final String? authUserId;
   final File? imageCover;
   final String urlImageCover;
   final int? totalChaptersPublished;
@@ -16,6 +20,10 @@ class Novel {
     required this.novelName,
     required this.description,
     this.isCompleted = false,
+    this.urlAuthAvatar = '',
+    this.authName,
+    this.authUserId,
+    this.imageAuthAvatar,
     this.imageCover,
     this.urlImageCover = '',
     this.totalChaptersPublished,
@@ -28,6 +36,10 @@ class Novel {
     String? novelName,
     String? description,
     bool? isCompleted,
+    File? imageAuthAvatar,
+    String? urlAuthAvatar,
+    String? authName,
+    String? authUserId,
     File? imageCover,
     String? urlImageCover,
     int? totalChaptersPublished,
@@ -39,6 +51,10 @@ class Novel {
       novelName: novelName ?? this.novelName,
       description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
+      imageAuthAvatar: imageAuthAvatar ?? this.imageAuthAvatar,
+      urlAuthAvatar: urlAuthAvatar ?? this.urlAuthAvatar,
+      authName: authName ?? this.authName,
+      authUserId: authUserId ?? this.authUserId,
       imageCover: imageCover ?? this.imageCover,
       urlImageCover: urlImageCover ?? this.urlImageCover,
       totalChaptersPublished:
@@ -52,6 +68,9 @@ class Novel {
     return imageCover != null || urlImageCover.isNotEmpty;
   }
 
+  bool hasAuthAvatar() {
+    return imageAuthAvatar != null || urlAuthAvatar!.isNotEmpty;
+  }
   Map<String, dynamic> toJson() {
     return {
       'novel_name': novelName,
@@ -67,6 +86,9 @@ class Novel {
       description: json['description'],
       isCompleted: json['is_completed'],
       urlImageCover: json['url_image_cover'],
+      urlAuthAvatar: json['url_auth_avatar'],
+      authName: json['auth_name'],
+      authUserId: json['auth_user_id'],
       totalChaptersPublished: json['totalChaptersPublished'] ?? 0,
       totalChaptersDraft: json['totalChaptersDraft'] ?? 0,
       totalViews: json['totalViews'] ?? 0,

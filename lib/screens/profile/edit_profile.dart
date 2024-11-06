@@ -91,7 +91,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       avatar: _avatarImage,
       cover: _coverImage,
     );
-    print("heloooooooooooooooooo");
     print(_avatarImage);
     print(_coverImage);
     await authManager.updateProfile(updatedUser);

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'chapter_list.dart';
-import '../../models/novel_manager.dart';
+import '../../models/novel.dart';
+import '../../models/chapter.dart';
 
 class ShowChapterListDialog {
   final BuildContext context;
-  final ChapterModel chapterModel;
+  final Novel novel;
+  final Chapter chapter;
 
   ShowChapterListDialog({
     required this.context,
-    required this.chapterModel,
+    required this.novel,
+    required this.chapter,
   });
 
   void show() {
@@ -45,7 +48,7 @@ class ShowChapterListDialog {
                   ).animate(curvedAnimation).value,
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: SafeArea(
-                    child: ChapterList(chapterModel: chapterModel),
+                    child: ChapterList(novel: novel),
                   ),
                 ),
               ],
@@ -57,17 +60,12 @@ class ShowChapterListDialog {
   }
 }
 
-// Function to initialize and call ShowChapterListDialog
-void showChapterListDialog(BuildContext context) {
-  final ChapterModel chapterModel = ChapterModel(
-    novelTitle: 'A fascinating journey',
-    novelImageUrl: 'https://i.pinimg.com/enabled_hi/564x/6a/6c/06/6a6c069505e5d71bf2aeeec9f2de1ca5.jpg',
-    currentChapter: 3,
-    chapters: List.generate(10, (index) => 'Chapter ${index + 1}'),
-  );
+
+void showChapterListDialog(BuildContext context, Novel novel,Chapter chapter) {
 
   ShowChapterListDialog(
     context: context,
-    chapterModel: chapterModel,
+    novel: novel,
+    chapter: chapter,
   ).show();
 }
