@@ -39,6 +39,26 @@ class ChapterManager with ChangeNotifier {
     _chapters = await _chapterService.fetchChapters(novelId, isPublished: true);
     notifyListeners();
   }
+  Future<void> fetchChapter(String chapterId) async {
+    final chapter = await _chapterService.fetchChapter(chapterId);
+    if (chapter != null) {
+      _chapters.add(chapter);
+      notifyListeners();
+    }
+  }
+  Chapter? getChapterById(String id) {
+    return _chapters.firstWhere((chapter) => chapter.id == id);
+  }
+
+
+  int getChapterIndexById(String id) {
+    return _chapters.indexWhere((chapter) => chapter.id == id);
+  }
+
+  Future<void> incrementViewCount(String chapterId) async {
+    await _chapterService.incrementViewCount(chapterId);
+    final index = _chapters.indexWhere((chapter) => chapter.id == chapterId);
+  }
 
   // Future<Chapter?> addChapter(Chapter chapter) async {
   //   final newChapter = await _chapterService.addChapter(chapter);

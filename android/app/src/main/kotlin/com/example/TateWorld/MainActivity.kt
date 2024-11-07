@@ -1,4 +1,4 @@
-package com.example.ct484_project
+package com.example.TateWorld
 
 import io.flutter.embedding.android.FlutterActivity
 

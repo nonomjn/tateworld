@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../models/theme_manager.dart';
+import '../../manager/theme_manager.dart';
 
 class ThemePicker extends StatelessWidget {
   final ValueChanged<ThemeData> onThemeChanged;

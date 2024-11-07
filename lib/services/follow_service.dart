@@ -1,5 +1,3 @@
-import 'package:pocketbase/pocketbase.dart';
-import '../services/user_service.dart';
 
 import '../models/user.dart';
 import './pocketbase_client.dart';
@@ -29,7 +27,7 @@ Future<Follow?> followUser(User follower, User following) async {
     final pb = await getPocketBaseInstance();
   try {
     final followModel = await pb.collection('follow').getFullList(
-      filter: "follower = '${follower.id}' && following = '${following.id}'",
+      filter: "follower ?~ '${follower.id}' && following ?~ '${following.id}'",
     );
     followModel.forEach((element) async {
       await pb.collection('follow').delete(element.id);

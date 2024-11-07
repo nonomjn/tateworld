@@ -37,7 +37,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
   }
 
   Future<void> _toggleFollowStatus() async {
-    final authManager = context.read<AuthManager>();
+    final authManager = context.watch<AuthManager>();
     setState(() {
       _isLoading = true;
     });

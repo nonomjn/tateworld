@@ -167,7 +167,22 @@ class _NovelDetailScreenState extends State<NovelDetailScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ReadNovel(
+                                        id: context
+                                            .read<ChapterManager>()
+                                            .chapters
+                                            .last
+                                            .id!,
+                                            novel: widget.novel,
+                                            ),
+                                            
+                                  ),
+                                );
+                              },
                               style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 24, vertical: 12),
@@ -189,9 +204,13 @@ class _NovelDetailScreenState extends State<NovelDetailScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ReadNovel(id: "d"),
-                                  ),
+                                      builder: (context) => ReadNovel(
+                                            id: context
+                                                .read<ChapterManager>()
+                                                .chapters[0]
+                                                .id!,
+                                                novel: widget.novel,
+                                          )),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -247,6 +266,20 @@ class _NovelDetailScreenState extends State<NovelDetailScreen> {
                                           ),
                                           trailing: const Icon(
                                               Icons.arrow_forward_ios),
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ReadNovel(
+                                                  id: context
+                                                      .read<ChapterManager>()
+                                                      .chapters[i]
+                                                      .id!,
+                                                      novel: widget.novel,
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
                                     ],
                                   ),

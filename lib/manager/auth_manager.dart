@@ -34,9 +34,6 @@ class AuthManager with ChangeNotifier {
 
   Future<void> tryAutoLogin() async {
     final user = await _authService.getUserFromStore();
-    print("hellllllllllllllllllllllllo");
-    String? toJson = user?.toJson().toString();
-    print("try auto login user: $toJson");
     if (_loggedInUser != null) {
       _loggedInUser = user;
       notifyListeners();

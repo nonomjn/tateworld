@@ -14,6 +14,10 @@ import 'manager/auth_manager.dart';
 import 'manager/chapter_manager.dart';
 import 'manager/storage_manager.dart';
 import 'manager/user_manager.dart';
+import 'manager/theme_manager.dart';
+import 'manager/follow_manager.dart';
+import 'manager/current_chapter_manager.dart';
+import 'manager/comment_manager.dart';
 import 'manager/reading_manager.dart';
 
 Future<void> main() async {
@@ -42,6 +46,18 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => StorageManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FontThemeManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FollowManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CurrentChapterManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CommentManager(),
         ),
         ChangeNotifierProvider(
           create: (context) => ReadingManager(),

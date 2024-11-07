@@ -13,7 +13,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  String _selectedGender = 'Nam';
+  String _selectedGender = 'nam';
   DateTime _selectedDate = DateTime(2000, 1, 1);
   final User _user = User(
     email: '',
@@ -22,7 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     DoB: DateTime.now(),
     username: '',
     role: 'user',
-    gender: 'Nam',
+    gender: 'nam',
   );
   final _isSubmitting = ValueNotifier<bool>(false);
   String _password = '';

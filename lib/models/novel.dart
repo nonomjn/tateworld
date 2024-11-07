@@ -8,6 +8,8 @@ class Novel {
   final String author;
   final File? imageCover;
   final String urlImageCover;
+  final File? imageAuthAvatar = null;
+  final String? urlAuthAvatar = '';
   final int? totalChaptersPublished;
   final int? totalChaptersDraft;
   final int? totalViews;
@@ -56,6 +58,9 @@ class Novel {
     return imageCover != null || urlImageCover.isNotEmpty;
   }
 
+  bool hasAuthAvatar() {
+    return imageAuthAvatar != null || urlAuthAvatar!.isNotEmpty;
+  }
   Map<String, dynamic> toJson() {
     return {
       'novel_name': novelName,
