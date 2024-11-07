@@ -148,7 +148,7 @@ class _CommentChapterState extends State<CommentChapter> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                    comment.userId.name, // Tên người dùng, bạn có thể thay bằng tên thật
+                    comment.userId.name, 
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.black87,

@@ -27,7 +27,7 @@ class AppBarWidget extends StatelessWidget {
       child: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: toggleVisibility,
+          onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: const Color.fromARGB(255, 39, 33, 33),
         title: Text(novel.novelName, style: const TextStyle(color: Colors.white)),

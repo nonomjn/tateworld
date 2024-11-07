@@ -29,13 +29,12 @@ class _ReadNovelState extends State<ReadNovel> {
   Chapter? chapter;
   late ScrollController _scrollController;
   bool _isLoadingNextChapter = false;
+  bool _shouldLoadNextChapter = false; // Biến đánh dấu cần tải chương tiếp theo
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    _scrollController.addListener(_onScroll);
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadChapter(widget.id);
     });
@@ -43,11 +42,11 @@ class _ReadNovelState extends State<ReadNovel> {
 
   @override
   void dispose() {
-    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
 
+  // Load Chapter
   void _loadChapter(String chapterId) {
     final chapterManager = context.read<ChapterManager>();
     chapter = chapterManager.getChapterById(chapterId);
@@ -58,16 +57,15 @@ class _ReadNovelState extends State<ReadNovel> {
         context
             .read<NovelsManager>()
             .fetchNovelByIdAndReplace(widget.novel.id!);
-
         context.read<CurrentChapterManager>().setCurrentChapter(chapter!);
-
         setState(() {});
       });
     }
   }
 
+  // Load Next Chapter
   Future<void> _loadNextChapter() async {
-    if (_isLoadingNextChapter) return;
+    if (_isLoadingNextChapter || !_shouldLoadNextChapter) return;
 
     final chapterManager = context.read<ChapterManager>();
     final nextIndex = chapterManager.getChapterIndexById(chapter!.id!) + 1;
@@ -75,9 +73,11 @@ class _ReadNovelState extends State<ReadNovel> {
     if (nextIndex < chapterManager.chapters.length) {
       setState(() {
         _isLoadingNextChapter = true;
+        _shouldLoadNextChapter =
+            false; // Ngừng tự động chuyển cho đến khi người dùng chạm vào màn hình
       });
 
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 100));
 
       setState(() {
         chapter = chapterManager.chapters[nextIndex];
@@ -93,20 +93,14 @@ class _ReadNovelState extends State<ReadNovel> {
     }
   }
 
-  void _onScroll() {
-    if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent &&
-        !_isLoadingNextChapter) {
-      _loadNextChapter();
-    }
-  }
-
+  // Toggle visibility of controls
   void _toggleVisibility() {
     setState(() {
       _isVisible = !_isVisible;
     });
   }
 
+  // Show font settings dialog
   void _showFontSettings() {
     showModalBottomSheet(
       context: context,
@@ -116,6 +110,7 @@ class _ReadNovelState extends State<ReadNovel> {
     );
   }
 
+  // Show comment dialog
   void _showCommentDialog() {
     if (chapter != null) {
       showModalBottomSheet(
@@ -142,17 +137,36 @@ class _ReadNovelState extends State<ReadNovel> {
       child: Scaffold(
         body: Stack(
           children: [
-            GestureDetector(
-              onTap: _toggleVisibility,
-              child: chapter != null
-                  ? NovelContent(
-                      fontSize: fontThemeManager.fontSize,
-                      selectedFont: fontThemeManager.fontFamily,
-                      currentTheme: fontThemeManager.currentTheme,
-                      chapter: chapter!,
-                      scrollController: _scrollController,
-                    )
-                  : const Center(child: CircularProgressIndicator()),
+            NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                if (notification is ScrollUpdateNotification) {
+                  // Kiểm tra nếu cuộn đến cuối chương
+                  if (_scrollController.position.pixels ==
+                      _scrollController.position.maxScrollExtent) {
+                    // Đánh dấu rằng người dùng đã cuộn hết, cần chuẩn bị chuyển sang chương tiếp theo
+                    _shouldLoadNextChapter = true;
+                  }
+                }
+                return false;
+              },
+              child: GestureDetector(
+                onTap: () {
+                  // Khi người dùng chạm vào màn hình, tiến hành tải chương tiếp theo nếu cần
+                  if (_shouldLoadNextChapter) {
+                    _loadNextChapter();
+                  }
+                  _toggleVisibility();
+                },
+                child: chapter != null
+                    ? NovelContent(
+                        fontSize: fontThemeManager.fontSize,
+                        selectedFont: fontThemeManager.fontFamily,
+                        currentTheme: fontThemeManager.currentTheme,
+                        chapter: chapter!,
+                        scrollController: _scrollController,
+                      )
+                    : const Center(child: CircularProgressIndicator()),
+              ),
             ),
             AppBarWidget(
               novel: widget.novel,
