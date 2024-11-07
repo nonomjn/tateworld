@@ -149,7 +149,6 @@ class _NovelDetailScreenState extends State<NovelDetailScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 4),
-                                // Placeholder for chapter count
                                 Text(
                                   widget.novel.totalChaptersPublished
                                       .toString(),
@@ -251,7 +250,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen> {
                               ),
                               const SizedBox(height: 8),
                               SizedBox(
-                                height: 200, // Chiều cao cố định cho danh sách
+                                height: 200,
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [

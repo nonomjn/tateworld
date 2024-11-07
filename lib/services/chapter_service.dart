@@ -1,5 +1,3 @@
-import 'package:pocketbase/pocketbase.dart';
-
 import '../models/chapter.dart';
 
 import 'pocketbase_client.dart';

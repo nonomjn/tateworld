@@ -1,3 +1,4 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 import '../models/novel.dart';
@@ -62,7 +63,7 @@ class NovelService {
         novels.add(Novel.fromJson(
           novelModel.toJson()
             ..addAll({
-              'url_image_cover': _getImageCover(pb, novelModel),
+              'image_cover': _getImageCover(pb, novelModel),
               'totalChaptersPublished': totalChaptersPublished,
               'totalChaptersDraft': totalChaptersDraft,
               'totalViews': totalViews,

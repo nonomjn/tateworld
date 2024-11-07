@@ -1,26 +1,28 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../models/storage.dart';
+import '../models/reading.dart';
 
 import 'pocketbase_client.dart';
 
-class StorageService {
-  Future<List<Storage>> fetchStorage() async {
-    final List<Storage> storage = [];
+class ReadingService {
+  Future<List<Reading>> fetchReadingNovel() async {
+    final List<Reading> reading = [];
 
     try {
       final pb = await getPocketBaseInstance();
       final userId = pb.authStore.model!.id;
 
-      final storageModels = await pb.collection('storage').getFullList(
+      final readingModels = await pb.collection('reading_status').getFullList(
             filter: "user = '$userId'",
-            expand: "novel, novel.chapter_via_novel",
+            expand: "chapter, chapter.novel, chapter.novel.chapter_via_novel",
           );
 
-      for (final storageModel in storageModels) {
-        final storageJson = storageModel.toJson();
+      for (final readingModel in readingModels) {
+        final readingJson = readingModel.toJson();
+        final chapterJson =
+            readingJson['expand']?['chapter'] as Map<String, dynamic>?;
         final novelJson =
-            storageJson['expand']?['novel'] as Map<String, dynamic>?;
+            chapterJson?['expand']?['novel'] as Map<String, dynamic>?;
 
         String? imageCover;
         imageCover = novelJson?['image_cover'] as String?;
@@ -51,17 +53,18 @@ class StorageService {
         novelJson?['totalChaptersPublished'] = totalChaptersPublished;
         novelJson?['totalViews'] = totalViews;
 
-        storage.add(Storage.fromJson(
-          storageJson
+        reading.add(Reading.fromJson(
+          readingJson
             ..['expand'] = {
+              'chapter': chapterJson,
               'novel': novelJson,
             },
         ));
       }
-
-      return storage;
     } catch (e) {
-      return storage;
+      print(e);
     }
+
+    return reading;
   }
 }

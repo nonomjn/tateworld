@@ -18,6 +18,7 @@ import 'manager/theme_manager.dart';
 import 'manager/follow_manager.dart';
 import 'manager/current_chapter_manager.dart';
 import 'manager/comment_manager.dart';
+import 'manager/reading_manager.dart';
 
 Future<void> main() async {
   await dotenv.load();
@@ -55,10 +56,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CurrentChapterManager(),
         ),
-        ChangeNotifierProvider(create: 
-          (context) => CommentManager(),
-        ),  
-
+        ChangeNotifierProvider(
+          create: (context) => CommentManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ReadingManager(),
+        ),
       ],
       child: Consumer<AuthManager>(builder: (ctx, auth, child) {
         return MaterialApp(
